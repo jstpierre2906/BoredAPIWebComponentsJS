@@ -15,5 +15,5 @@ export class Component extends HTMLElement {
    * @param {{selector: string}}
    * @returns {Component}
    */
-  selectComponent = ({ selector }) => document.querySelector(selector);
+  findComponent = ({ selector }) => document.querySelector(selector);
 }
