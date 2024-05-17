@@ -4,8 +4,19 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Bored API w/ Web Components and Java HttpServer</title>
+    <script type="importmap">
+      {
+        "imports": {
+          "@components/": "/src/components/",
+          "@components/boredapi-search-box/": "/src/components/boredapi-search-box/"
+        }
+      }
+    </script>
+    <script type="module" defer src="/src/main.js"></script>
   </head>
   <body>
     <h2>Bored API w/ Web Components and Java HttpServer</h2>
+    <boredapi-search-box>Foo</boredapi-search-box>
+    <!-- <boredapi-search-results></boredapi-search-results> -->
   </body>
 </html>
