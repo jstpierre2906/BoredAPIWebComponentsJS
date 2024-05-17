@@ -36,19 +36,16 @@ export class BoredAPISearchBox extends Component {
           fields: ["type", "description", "duration"],
           values: ["asc", "desc"],
         };
-        const orderbys = (() => {
-          const flattened = [];
-          const doubleLayered = orderbyData.fields.map((field) => {
-            return orderbyData.values.map(
-              (value) =>
-                `<option value="${field} - ${value}">${toSentenceCase(
-                  field
-                )} - ${value.toUpperCase()}</option>`
-            );
-          });
-          doubleLayered.forEach((layer) => layer.forEach((subLayer) => flattened.push(subLayer)));
-          return flattened;
-        })();
+        const orderbys = [];
+        orderbyData.fields.forEach((field) =>
+          orderbyData.values.forEach((value) =>
+            orderbys.push(
+              `<option value="${field} - ${value}">${toSentenceCase(
+                field
+              )} - ${value.toUpperCase()}</option>`
+            )
+          )
+        );
         console.log(orderbys);
 
         const template = document.createElement("template");
