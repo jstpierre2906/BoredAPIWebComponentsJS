@@ -8,6 +8,9 @@ import {
 } from "./boredapi-searchbox.model.js";
 
 export class BoredAPISearchBox extends Component {
+  static get observedAttributes() {
+    return ["max-results"];
+  }
   iMaxResults;
   constructor() {
     super();
@@ -77,5 +80,14 @@ export class BoredAPISearchBox extends Component {
         );
       },
     });
+  }
+
+  attributeChangedCallback(name, oldValue, newValue) {
+    if (name === "max-results") this.newMaxResultsHandler({ maxResults: newValue });
+  }
+
+  newMaxResultsHandler({ maxResults }) {
+    this.iMaxResults = +maxResults;
+    this.shadowRoot.querySelector("#maxResults").value = maxResults;
   }
 }
