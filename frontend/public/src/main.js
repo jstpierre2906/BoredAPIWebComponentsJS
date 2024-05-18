@@ -1,5 +1,5 @@
-import { BoredAPISearchBox } from "@components/boredapi-search-box/boredapi-search-box.js";
+import { BoredAPISearchBox } from "@components/boredapi-searchbox/boredapi-searchbox.js";
 
-[{ name: "boredapi-search-box", constructor: BoredAPISearchBox }].forEach((component) => {
+[{ name: "boredapi-searchbox", constructor: BoredAPISearchBox }].forEach((component) => {
   customElements.define(component.name, component.constructor);
 });

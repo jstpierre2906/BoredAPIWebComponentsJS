@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Bored API w/ Web Components and Java HttpServer</title>
+    <link rel="stylesheet" href="/styles/style.css" />
     <script type="importmap">
       {
         "imports": {
@@ -16,9 +17,15 @@
   </head>
   <body>
     <div id="container">
-      <h1>Bored API w/ Web Components and Java HttpServer</h1>
-      <boredapi-search-box max-results="30">Search Bored API</boredapi-search-box>
-      <!-- <boredapi-search-results></boredapi-search-results> -->
+      <div id="header-container">
+        <h1>Bored API <span>(w/ Web Components and Java HttpServer)</span></h1>
+      </div>
+      <div id="searchbox-container">
+        <boredapi-searchbox max-results="30">Search Bored API</boredapi-searchbox>
+      </div>
+      <div id="searchresults-container">
+        <!-- <boredapi-searchresults></boredapi-searchresults> -->
+      </div>
     </div>
   </body>
 </html>

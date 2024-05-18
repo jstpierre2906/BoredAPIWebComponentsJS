@@ -1,0 +1,49 @@
+div#container {
+  color: #446;
+  font-family: sans-serif;
+  font-size: 14px;
+  box-sizing: border-box;
+  min-width: 410px;
+}
+
+div#container > div#searchbox-container {
+  border-bottom: 1px solid black;
+  padding-bottom: 1em;
+}
+
+div#container > div#header-container {
+  grid-area: header;
+}
+
+div#container > div#header-container > h1 {
+  font-weight: normal;
+}
+
+div#container > div#header-container > h1 > span {
+  font-size: 0.7em;
+  font-weight: normal;
+  display: block;
+}
+
+div#container div#searchbox-container {
+  grid-area: searchbox;
+}
+
+div#container div#searchresults-container {
+  grid-area: searchresults;
+}
+
+@media (min-width: 768px) /* and (max-width: 1024px) */ {
+  div#container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto;
+    grid-template-areas:
+      "header header "
+      "searchbox searchresults";
+  }
+  div#container > div#searchbox-container {
+    border-bottom: 0px;
+    padding-bottom: 0px;
+  }
+}

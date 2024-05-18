@@ -40,17 +40,15 @@ export class BoredAPISearchBox extends Component {
         orderbyData.fields.forEach((field) =>
           orderbyData.values.forEach((value) =>
             orderbys.push(
-              `<option value="${field} - ${value}">${toSentenceCase(
+              /*html*/ `<option value="${field} - ${value}">${toSentenceCase(
                 field
               )} - ${value.toUpperCase()}</option>`
             )
           )
         );
-        console.log(orderbys);
-
         const template = document.createElement("template");
         template.innerHTML = /*html*/ `
-          <link rel="stylesheet" href="/src/components/boredapi-search-box/boredapi-search-box.css" />
+          <link rel="stylesheet" href="/src/components/boredapi-searchbox/boredapi-searchbox.css" />
           <div>
             <h2>${this.textContent}</h2>
             <form>
@@ -75,8 +73,12 @@ export class BoredAPISearchBox extends Component {
                 <select id="duration">${durations.join("")}</select>
               </div>
               <div>
-              <input id="maxResults" type="hidden" value="${this.iMaxResults}" />
-                <input id="reserBtn" type="reset" value="Reset" />
+                <label for="orderby">Order by</label>
+                <select id="orderby">${orderbys.join("")}</select>
+              </div>
+              <div>
+                <input id="maxResults" type="hidden" value="${this.iMaxResults}" />
+                <input id="resetBtn" type="reset" value="Reset" />
                 <input id="searchBtn" type="button" value="Search" />
               </div>
             </form>

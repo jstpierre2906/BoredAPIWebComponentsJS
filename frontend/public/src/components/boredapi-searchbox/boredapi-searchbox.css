@@ -1,0 +1,47 @@
+:host > div > h2 {
+  color: #484;
+  font-weight: normal;
+  margin-bottom: 0.2em;
+}
+
+:host > div > form {
+  padding: 0.5em;
+  border: 2px solid #484;
+  border-radius: 0.8em;
+}
+
+:host > div > form > div {
+  padding: 0.5em;
+}
+
+:host > div > form > div > label {
+  display: block;
+}
+
+:host > div > form > div > input,
+:host > div > form > div > select {
+  padding: 0.2em;
+  background-color: white;
+  border: 1px solid #484;
+  border-radius: 0.4em;
+}
+
+:host > div > form > div > input[type="text"],
+:host > div > form > div > input[type="number"] {
+  width: 95%;
+}
+
+:host > div > form > div > input[type="reset"],
+:host > div > form > div > input[type="button"] {
+  width: 25%;
+  margin-right: 1em;
+}
+
+:host > div > form > div > input[type="reset"]:hover,
+:host > div > form > div > input[type="button"]:hover {
+  cursor: pointer;
+}
+
+:host > div > form > div > select {
+  width: 100%;
+}
