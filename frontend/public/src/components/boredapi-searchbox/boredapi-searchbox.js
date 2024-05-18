@@ -1,4 +1,10 @@
 import { Component } from "@components/component.js";
+import {
+  durationsModel,
+  orderbyModel,
+  participantsModel,
+  typesModel,
+} from "./boredapi-searchbox.model.js";
 
 export class BoredAPISearchBox extends Component {
   iMaxResults;
@@ -10,35 +16,21 @@ export class BoredAPISearchBox extends Component {
     const toSentenceCase = (str) => str.substring(0, 1).toUpperCase() + str.substring(1);
     this.shadowRoot.appendChild(
       (() => {
-        const types = [
-          "busywork",
-          "charity",
-          "cooking",
-          "diy",
-          "education",
-          "music",
-          "social",
-          "recreational",
-          "relaxation",
-        ].map(
+        const types = typesModel.map(
           (type) =>
             /*html*/ `<option value="${type}">${
               type === "diy" ? type.toUpperCase() : toSentenceCase(type)
             }</option>`
         );
-        const participants = ["1", "2", "3", "4", "5", "8", "2+", "3+", "4+"].map(
+        const participants = participantsModel.map(
           (qty) => /*html*/ ` <option value="${qty}">${qty.replace("+", " or more")}</option>`
         );
-        const durations = ["minutes", "hours", "days", "weeks"].map(
+        const durations = durationsModel.map(
           (duration) => /*html*/ `<option value="${duration}">${toSentenceCase(duration)}</option>`
         );
-        const orderbyData = {
-          fields: ["type", "description", "duration"],
-          values: ["asc", "desc"],
-        };
         const orderbys = [];
-        orderbyData.fields.forEach((field) =>
-          orderbyData.values.forEach((value) =>
+        orderbyModel.fields.forEach((field) =>
+          orderbyModel.values.forEach((value) =>
             orderbys.push(
               /*html*/ `<option value="${field} - ${value}">${toSentenceCase(
                 field
