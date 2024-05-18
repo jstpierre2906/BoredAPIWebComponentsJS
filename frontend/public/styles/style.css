@@ -6,11 +6,6 @@ div#container {
   min-width: 410px;
 }
 
-div#container > div#searchbox-container {
-  border-bottom: 1px solid black;
-  padding-bottom: 1em;
-}
-
 div#container > div#header-container {
   grid-area: header;
 }
@@ -21,15 +16,16 @@ div#container > div#header-container > h1 {
 
 div#container > div#header-container > h1 > span {
   font-size: 0.7em;
-  font-weight: normal;
   display: block;
 }
 
-div#container div#searchbox-container {
+div#container > div#searchbox-container {
   grid-area: searchbox;
+  border-bottom: 1px solid #446;
+  padding-bottom: 1em;
 }
 
-div#container div#searchresults-container {
+div#container > div#searchresults-container {
   grid-area: searchresults;
 }
 
