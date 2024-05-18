@@ -1,11 +1,11 @@
-import { Component } from "@components/component.js";
-import { html } from "./boredapi-searchbox.html.js";
+import { html } from "@components/boredapi-searchbox/boredapi-searchbox.html.js";
 import {
   durationsModel,
   orderbyModel,
   participantsModel,
   typesModel,
-} from "./boredapi-searchbox.model.js";
+} from "@components/boredapi-searchbox/boredapi-searchbox.model.js";
+import { Component } from "@components/component.js";
 
 export class BoredAPISearchBox extends Component {
   static get observedAttributes() {
