@@ -51,5 +51,20 @@ export class BoredAPISearchBox extends Component {
         return template.content.cloneNode(true);
       })()
     );
+    const searchButton = this.shadowRoot.querySelector("#searchBtn");
+    searchButton.addEventListener("click", (event) => {
+      const data = {};
+      const elementsList = this.shadowRoot.querySelectorAll(
+        "select, input[type='number'], input[type='text'], input[type='hidden']"
+      );
+      Array.from(elementsList)
+        .map((element) => element.id)
+        .forEach((id) => (data[id] = this.shadowRoot.querySelector(`#${id}`).value));
+      this.searchQueryHandler({ data: data });
+    });
+  }
+
+  searchQueryHandler({ data }) {
+    console.log(data);
   }
 }
