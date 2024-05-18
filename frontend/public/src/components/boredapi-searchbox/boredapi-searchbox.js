@@ -9,14 +9,18 @@ import {
 
 export class BoredAPISearchBox extends Component {
   static get observedAttributes() {
-    return ["max-results"];
+    return ["max-results", "search-description"];
   }
+  static DEFAULT_SEARCH_DESCRIPTION = "Search Bored API";
   iMaxResults;
+  iSearchDescription;
   constructor() {
     super();
     this.iMaxResults = !isNaN(this.getAttribute("max-results"))
       ? +this.getAttribute("max-results")
       : 50;
+    this.iSearchDescription =
+      this.getAttribute("search-description") ?? BoredAPISearchBox.DEFAULT_SEARCH_DESCRIPTION;
     const toSentenceCase = (str) => str.substring(0, 1).toUpperCase() + str.substring(1);
     this.shadowRoot.appendChild(
       (() => {
@@ -44,7 +48,7 @@ export class BoredAPISearchBox extends Component {
         );
         const template = document.createElement("template");
         template.innerHTML = html({
-          textContent: this.textContent,
+          iSearchDescription: this.iSearchDescription,
           types: types,
           participants: participants,
           durations: durations,
@@ -83,11 +87,22 @@ export class BoredAPISearchBox extends Component {
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
-    if (name === "max-results") this.newMaxResultsHandler({ maxResults: newValue });
+    switch (true) {
+      case name === "max-results":
+        this.newMaxResultsHandler({ maxResults: newValue });
+        break;
+      case name === "search-description":
+        this.searchDescriptionHandler({ searchDescription: newValue });
+    }
   }
 
   newMaxResultsHandler({ maxResults }) {
     this.iMaxResults = +maxResults;
     this.shadowRoot.querySelector("#maxResults").value = maxResults;
+  }
+
+  searchDescriptionHandler({ searchDescription }) {
+    this.iSearchDescription = searchDescription;
+    this.shadowRoot.querySelector("#searchDescription").textContent = searchDescription;
   }
 }

@@ -1,5 +1,5 @@
 export const html = ({
-  textContent,
+  iSearchDescription,
   types,
   participants,
   durations,
@@ -8,7 +8,7 @@ export const html = ({
 }) => /*html*/ `
 <link rel="stylesheet" href="/src/components/boredapi-searchbox/boredapi-searchbox.css" />
 <div>
-  <h2>${textContent}</h2>
+  <h2 id="searchDescription">${iSearchDescription}</h2>
   <form>
     <div>
       <label for="activityId">ID</label>

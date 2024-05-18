@@ -1,4 +1,4 @@
-:host > div > h2 {
+:host > div > h2#searchDescription {
   color: #484;
   font-weight: normal;
   margin-bottom: 0.2em;
