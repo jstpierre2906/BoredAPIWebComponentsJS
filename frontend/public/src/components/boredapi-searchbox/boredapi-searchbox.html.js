@@ -1,4 +1,11 @@
-export const html = ({ textContent, types, participants, durations, orderbys, iMaxResults }) => /*html*/ `
+export const html = ({
+  textContent,
+  types,
+  participants,
+  durations,
+  orderbys,
+  iMaxResults,
+}) => /*html*/ `
 <link rel="stylesheet" href="/src/components/boredapi-searchbox/boredapi-searchbox.css" />
 <div>
   <h2>${textContent}</h2>

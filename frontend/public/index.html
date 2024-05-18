@@ -27,5 +27,8 @@
         <!-- <boredapi-searchresults></boredapi-searchresults> -->
       </div>
     </div>
+    <script>
+      document.addEventListener("newSearchQueryEvent", (event) => console.log(event.detail.data));
+    </script>
   </body>
 </html>
