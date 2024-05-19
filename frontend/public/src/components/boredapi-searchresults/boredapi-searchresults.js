@@ -13,4 +13,12 @@ export class BoredAPISearchResults extends Component {
       })()
     );
   }
+
+  connectedCallback() {
+    this.addListeners({ events: ["newSearchQueryEvent"] });
+  }
+
+  newSearchQueryHandler({ searchQuery }) {
+    console.log(searchQuery);
+  }
 }

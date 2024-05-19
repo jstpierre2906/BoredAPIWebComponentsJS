@@ -63,7 +63,7 @@ export class BoredAPISearchBox extends Component {
   }
 
   searchQueryHandler() {
-    const data = {};
+    const searchQuery = {};
     this.applyActions({
       setData: () => {
         const elementsList = this.shadowRoot.querySelectorAll(
@@ -71,15 +71,14 @@ export class BoredAPISearchBox extends Component {
         );
         Array.from(elementsList)
           .map((element) => element.id)
-          .forEach((id) => (data[id] = this.shadowRoot.querySelector(`#${id}`).value));
+          .forEach((id) => (searchQuery[id] = this.shadowRoot.querySelector(`#${id}`).value));
       },
       dispatchEvent: () => {
-        // this.findComponent({ selector: "boredapi-searchresults" }).dispatchEvent(
-        document.dispatchEvent(
+        this.findComponent({ selector: "boredapi-searchresults" }).dispatchEvent(
           new CustomEvent("newSearchQueryEvent", {
             bubbles: true,
             composed: true,
-            detail: { data: data },
+            detail: { searchQuery: searchQuery },
           })
         );
       },
