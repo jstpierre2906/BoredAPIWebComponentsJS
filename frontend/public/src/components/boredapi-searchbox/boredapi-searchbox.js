@@ -40,7 +40,7 @@ export class BoredAPISearchBox extends Component {
         orderbyModel.fields.forEach((field) =>
           orderbyModel.values.forEach((value) =>
             orderbys.push(
-              /*html*/ `<option value="${field} - ${value}">${toSentenceCase(
+              /*html*/ `<option value="${field}-${value}">${toSentenceCase(
                 field
               )} - ${value.toUpperCase()}</option>`
             )
