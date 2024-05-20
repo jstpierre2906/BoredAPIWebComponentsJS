@@ -67,6 +67,7 @@ export class BoredAPISearchResults extends Component {
               })
               .filter((d) => (searchQuery.duration ? d.duration === searchQuery.duration : true));
 
+            filteredData.splice(+searchQuery.maxResults);
             resolve(filteredData);
           })
           .catch((err) => reject(`Error: Problem with JSON formatting - ${err}`));
