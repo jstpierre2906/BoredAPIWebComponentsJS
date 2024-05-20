@@ -31,19 +31,27 @@ export class BoredAPISearchResults extends Component {
       .map((key) => `${key}=${searchQuery[key]}`)
       .join("&");
     return new Promise((resolve, reject) => {
-      fetch(`/mock-data/activities.json?${queryString}`, {
-        method: "GET",
-        mode: "cors",
-        headers: { "Content-Type": "application/json" },
-      })
-        .then((response) => {
-          if (response.status !== 200) {
-            reject(`Error: Response status ${response.status}`);
-          }
-          return response.json();
+      // Mock, remove settimeout after.
+      setTimeout(() => {
+        fetch(`/mock-data/activities.json?${queryString}`, {
+          method: "GET",
+          mode: "cors",
+          headers: { "Content-Type": "application/json" },
         })
-        .then((data) => resolve(data))
-        .catch((err) => reject(`Error: Problem with JSON formatting - ${err}`));
+          .then((response) => {
+            if (response.status !== 200) {
+              reject(`Error: Response status ${response.status}`);
+            }
+            return response.json();
+          })
+          .then((data) => {
+            const filteredData = data.filter((d) =>
+              searchQuery.activityId ? searchQuery.activityId.toString() === d.key : true
+            );
+            resolve(filteredData);
+          })
+          .catch((err) => reject(`Error: Problem with JSON formatting - ${err}`));
+      }, 100);
     });
   }
 }
