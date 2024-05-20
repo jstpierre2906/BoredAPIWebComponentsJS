@@ -24,28 +24,47 @@ export class BoredAPISearchBox extends Component {
     const toSentenceCase = (str) => str.substring(0, 1).toUpperCase() + str.substring(1);
     this.shadowRoot.appendChild(
       (() => {
-        const types = typesModel.map(
-          (type) =>
-            /*html*/ `<option value="${type}">${
-              type === "diy" ? type.toUpperCase() : toSentenceCase(type)
-            }</option>`
+        const typesTpl = /*html*/ `<option value="{value}">{textContent}</option>`;
+        const types = typesModel.map((type, index) =>
+          typesTpl
+            .replace("{value}", type)
+            .replace("{textContent}", type === "diy" ? type.toUpperCase() : toSentenceCase(type))
         );
-        const participants = participantsModel.map(
-          (qty) => /*html*/ ` <option value="${qty}">${qty.replace("+", " or more")}</option>`
+        this.setChooseSelectOption({ arr: types, tpl: typesTpl, label: "type" });
+
+        const participantsTpl = /*html*/ `<option value="{value}">{textContent}</option>`;
+        const participants = participantsModel.map((qty) =>
+          participantsTpl
+            .replace("{value}", qty)
+            .replace("{textContent}", qty.replace("+", " or more"))
         );
-        const durations = durationsModel.map(
-          (duration) => /*html*/ `<option value="${duration}">${toSentenceCase(duration)}</option>`
+        this.setChooseSelectOption({
+          arr: participants,
+          tpl: participantsTpl,
+          label: "participants",
+        });
+
+        const durationsTpl = /*html*/ `<option value="{value}">{textContent}</option>`;
+        const durations = durationsModel.map((duration) =>
+          durationsTpl
+            .replace("{value}", duration)
+            .replace("{textContent}", toSentenceCase(duration))
         );
+        this.setChooseSelectOption({ arr: durations, tpl: durationsTpl, label: "duration" });
+
         const orderbys = [];
+        const orderbysTpl = /*html*/ `<option value="{value}">{textContent}</option>`;
         orderbyModel.fields.forEach((field) =>
           orderbyModel.values.forEach((value) =>
             orderbys.push(
-              /*html*/ `<option value="${field}-${value}">${toSentenceCase(
-                field
-              )} - ${value.toUpperCase()}</option>`
+              orderbysTpl
+                .replace("{value}", `${field}-${value}`)
+                .replace("{textContent}", `${toSentenceCase(field)} - ${value.toUpperCase()}`)
             )
           )
         );
+        this.setChooseSelectOption({ arr: orderbys, tpl: orderbysTpl, label: "sort order" });
+
         const template = document.createElement("template");
         template.innerHTML = html({
           iSearchDescription: this.iSearchDescription,

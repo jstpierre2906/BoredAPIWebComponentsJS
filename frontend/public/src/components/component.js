@@ -11,6 +11,10 @@ export class Component extends HTMLElement {
     );
   };
 
+  setChooseSelectOption = ({ arr, tpl, label }) => {
+    arr.unshift(tpl.replace("{value}", "").replace("{textContent}", `Choose ${label}`));
+  };
+
   /**
    * @param {{selector: string}}
    * @returns {Component}
