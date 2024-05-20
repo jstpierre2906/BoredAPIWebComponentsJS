@@ -45,9 +45,28 @@ export class BoredAPISearchResults extends Component {
             return response.json();
           })
           .then((data) => {
-            const filteredData = data.filter((d) =>
-              searchQuery.activityId ? searchQuery.activityId.toString() === d.key : true
-            );
+            const filteredData = data
+              .filter((d) =>
+                searchQuery.activityId ? d.key.includes(searchQuery.activityId.toString()) : true
+              )
+              .filter((d) =>
+                searchQuery.description
+                  ? d.activity.toLowerCase().includes(searchQuery.description.toLowerCase())
+                  : true
+              )
+              .filter((d) => (searchQuery.type ? d.type === searchQuery.type : true))
+              .filter((d) => {
+                if (!searchQuery.participants) {
+                  return true;
+                }
+                if (searchQuery.participants.endsWith("+")) {
+                  const participants = +searchQuery.participants.replace("+", "");
+                  return d.participants >= participants;
+                }
+                return d.participants === +searchQuery.participants;
+              })
+              .filter((d) => (searchQuery.duration ? d.duration === searchQuery.duration : true));
+
             resolve(filteredData);
           })
           .catch((err) => reject(`Error: Problem with JSON formatting - ${err}`));
