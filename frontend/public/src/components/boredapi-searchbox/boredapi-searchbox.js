@@ -1,4 +1,5 @@
 import { html } from "@components/boredapi-searchbox/boredapi-searchbox.html.js";
+import { htmlSelectOption } from "@components/boredapi-searchbox/boredapi-searchbox-select-option.html.js";
 import {
   durationsModel,
   orderbyModel,
@@ -24,46 +25,36 @@ export class BoredAPISearchBox extends Component {
     const toSentenceCase = (str) => str.substring(0, 1).toUpperCase() + str.substring(1);
     this.shadowRoot.appendChild(
       (() => {
-        const typesTpl = /*html*/ `<option value="{value}">{textContent}</option>`;
-        const types = typesModel.map((type, index) =>
-          typesTpl
-            .replace("{value}", type)
-            .replace("{textContent}", type === "diy" ? type.toUpperCase() : toSentenceCase(type))
+        const types = typesModel.map((type) =>
+          htmlSelectOption({
+            value: type,
+            textContent: type === "diy" ? type.toUpperCase() : toSentenceCase(type),
+          })
         );
-        this.setChooseSelectOption({ arr: types, tpl: typesTpl, label: "type" });
+        types.unshift(htmlSelectOption({ textContent: "Choose type" }));
 
-        const participantsTpl = /*html*/ `<option value="{value}">{textContent}</option>`;
         const participants = participantsModel.map((qty) =>
-          participantsTpl
-            .replace("{value}", qty)
-            .replace("{textContent}", qty.replace("+", " or more"))
+          htmlSelectOption({ value: qty, textContent: qty.replace("+", " or more") })
         );
-        this.setChooseSelectOption({
-          arr: participants,
-          tpl: participantsTpl,
-          label: "participants",
-        });
+        participants.unshift(htmlSelectOption({ textContent: "Choose participants" }));
 
-        const durationsTpl = /*html*/ `<option value="{value}">{textContent}</option>`;
         const durations = durationsModel.map((duration) =>
-          durationsTpl
-            .replace("{value}", duration)
-            .replace("{textContent}", toSentenceCase(duration))
+          htmlSelectOption({ value: duration, textContent: toSentenceCase(duration) })
         );
-        this.setChooseSelectOption({ arr: durations, tpl: durationsTpl, label: "duration" });
+        durations.unshift(htmlSelectOption({ textContent: "Choose duration" }));
 
         const orderbys = [];
-        const orderbysTpl = /*html*/ `<option value="{value}">{textContent}</option>`;
         orderbyModel.fields.forEach((field) =>
           orderbyModel.values.forEach((value) =>
             orderbys.push(
-              orderbysTpl
-                .replace("{value}", `${field}-${value}`)
-                .replace("{textContent}", `${toSentenceCase(field)} - ${value.toUpperCase()}`)
+              htmlSelectOption({
+                value: `${field}-${value}`,
+                textContent: `${toSentenceCase(field)} - ${value.toUpperCase()}`,
+              })
             )
           )
         );
-        this.setChooseSelectOption({ arr: orderbys, tpl: orderbysTpl, label: "sort order" });
+        orderbys.unshift(htmlSelectOption({ textContent: "Choose sort order" }));
 
         const template = document.createElement("template");
         template.innerHTML = html({
