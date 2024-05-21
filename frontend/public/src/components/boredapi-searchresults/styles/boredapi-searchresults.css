@@ -1,0 +1,43 @@
+:host > div > h2#resultsDescription {
+  color: rgb(68, 136, 68);
+  font-weight: normal;
+}
+
+:host > div > div#results > div.result {
+  padding: 0.3em;
+  margin: 1.5em 0px;
+  border-radius: 1em;
+}
+
+:host > div > div#results > div.result:hover {
+  background-color: rgb(240, 255, 240);
+}
+
+:host > div > div#results > div.result > h3 {
+  font-weight: normal;
+  margin: 0.5em 0px 0.2em 0px;
+}
+
+:host > div > div#results > div.result > h3::before {
+  content: "- ";
+}
+
+:host > div > div#results > div.result > ul {
+  list-style-type: none;
+  padding-inline-start: 0.8em;
+  margin-block-start: 0em;
+  margin-block-end: 0.2em;
+}
+
+:host > div > div#results > div.result > ul > li {
+  display: inline-block;
+  margin-bottom: 0px;
+}
+
+:host > div > div#results > div.result > ul > li.left {
+  min-width: 10em;
+}
+
+:host > div > div#results > div.result > ul > li > span.label {
+  color: rgb(68, 136, 68);
+}

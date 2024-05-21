@@ -1,12 +1,12 @@
 :host > div > h2#searchDescription {
-  color: #484;
+  color: rgb(68, 136, 68);
   font-weight: normal;
   margin-bottom: 0.2em;
 }
 
 :host > div > form {
   padding: 0.5em;
-  border: 2px solid #484;
+  border: 2px solid rgb(68, 136, 68);
   border-radius: 0.8em;
 }
 
@@ -22,7 +22,7 @@
 :host > div > form > div > select {
   padding: 0.2em;
   background-color: white;
-  border: 1px solid #484;
+  border: 1px solid rgb(68, 136, 68);
   border-radius: 0.4em;
 }
 

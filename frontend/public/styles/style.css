@@ -1,5 +1,5 @@
 div#container {
-  color: #446;
+  color: rgb(68, 68, 102);
   font-family: sans-serif;
   font-size: 14px;
   box-sizing: border-box;
@@ -21,7 +21,7 @@ div#container > div#header-container > h1 > span {
 
 div#container > div#searchbox-container {
   grid-area: searchbox;
-  border-bottom: 1px solid #446;
+  border-bottom: 1px solid rgb(68, 68, 102);
   padding-bottom: 1em;
 }
 
