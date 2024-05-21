@@ -7,6 +7,7 @@ import {
 import { htmlSelectOption } from "@components/boredapi-searchbox/templates/boredapi-searchbox-select-option.html.js";
 import { html } from "@components/boredapi-searchbox/templates/boredapi-searchbox.html.js";
 import { Component } from "@components/component.js";
+import { utils } from "../../utils/utils.js";
 
 export class BoredAPISearchBox extends Component {
   static get observedAttributes() {
@@ -22,37 +23,32 @@ export class BoredAPISearchBox extends Component {
       : 50;
     this.iSearchDescription =
       this.getAttribute("search-description") ?? BoredAPISearchBox.DEFAULT_SEARCH_DESCRIPTION;
-    const toSentenceCase = (str) => str.substring(0, 1).toUpperCase() + str.substring(1);
     this.shadowRoot.appendChild(
       (() => {
         const types = typesModel.map((type) =>
-          htmlSelectOption({
-            value: type,
-            textContent: type === "diy" ? type.toUpperCase() : toSentenceCase(type),
-          })
+          htmlSelectOption({ value: type, textContent: utils.setDisplay.types(type) })
         );
         types.unshift(htmlSelectOption({ textContent: "Choose type" }));
 
         const participants = participantsModel.map((qty) =>
-          htmlSelectOption({ value: qty, textContent: qty.replace("+", " or more") })
+          htmlSelectOption({ value: qty, textContent: utils.setDisplay.participants(qty) })
         );
         participants.unshift(htmlSelectOption({ textContent: "Choose participants" }));
 
         const durations = durationsModel.map((duration) =>
-          htmlSelectOption({ value: duration, textContent: toSentenceCase(duration) })
+          htmlSelectOption({ value: duration, textContent: utils.setDisplay.durations(duration) })
         );
         durations.unshift(htmlSelectOption({ textContent: "Choose duration" }));
 
         const orderbys = [];
         orderbyModel.fields.forEach((field) =>
-          orderbyModel.values.forEach((value) =>
-            orderbys.push(
-              htmlSelectOption({
-                value: `${field}-${value}`,
-                textContent: `${toSentenceCase(field)} - ${value.toUpperCase()}`,
-              })
-            )
-          )
+          orderbyModel.values.forEach((value) => {
+            const option = htmlSelectOption({
+              value: `${field}-${value}`,
+              textContent: utils.setDisplay.orderbys(field, value),
+            });
+            orderbys.push(option);
+          })
         );
         orderbys.unshift(htmlSelectOption({ textContent: "Choose sort order" }));
 

@@ -1,6 +1,7 @@
 import { htmlResult } from "@components/boredapi-searchresults/templates/boredapi-searchresult.html.js";
 import { html } from "@components/boredapi-searchresults/templates/boredapi-searchresults.html.js";
 import { Component } from "@components/component.js";
+import { utils } from "../../utils/utils.js";
 
 export class BoredAPISearchResults extends Component {
   results = [];
@@ -106,9 +107,9 @@ export class BoredAPISearchResults extends Component {
         htmlResult({
           activity: result.activity,
           key: result.key,
-          type: result.type,
+          type: utils.setDisplay.types(result.type),
           participants: result.participants,
-          duration: result.duration,
+          duration: utils.setDisplay.durations(result.duration),
           link: result.link ?? "",
         })
       )
