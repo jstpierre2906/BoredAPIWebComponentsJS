@@ -1,5 +1,5 @@
-import { html } from "@components/boredapi-searchresults/boredapi-searchresults.html.js";
-import { htmlResult } from "@components/boredapi-searchresults/boredapi-searchresult.html.js";
+import { htmlResult } from "@components/boredapi-searchresults/templates/boredapi-searchresult.html.js";
+import { html } from "@components/boredapi-searchresults/templates/boredapi-searchresults.html.js";
 import { Component } from "@components/component.js";
 
 export class BoredAPISearchResults extends Component {

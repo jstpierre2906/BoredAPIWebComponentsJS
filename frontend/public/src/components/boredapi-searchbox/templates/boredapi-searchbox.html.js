@@ -6,7 +6,7 @@ export const html = ({
   orderbys,
   iMaxResults,
 }) => /*html*/ `
-<link rel="stylesheet" href="/src/components/boredapi-searchbox/boredapi-searchbox.css" />
+<link rel="stylesheet" href="/src/components/boredapi-searchbox/styles/boredapi-searchbox.css" />
 <div>
   <h2 id="searchDescription">${iSearchDescription}</h2>
   <form>

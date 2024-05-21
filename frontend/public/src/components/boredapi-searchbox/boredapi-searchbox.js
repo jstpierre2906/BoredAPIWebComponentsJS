@@ -1,11 +1,11 @@
-import { html } from "@components/boredapi-searchbox/boredapi-searchbox.html.js";
-import { htmlSelectOption } from "@components/boredapi-searchbox/boredapi-searchbox-select-option.html.js";
 import {
   durationsModel,
   orderbyModel,
   participantsModel,
   typesModel,
 } from "@components/boredapi-searchbox/boredapi-searchbox.model.js";
+import { htmlSelectOption } from "@components/boredapi-searchbox/templates/boredapi-searchbox-select-option.html.js";
+import { html } from "@components/boredapi-searchbox/templates/boredapi-searchbox.html.js";
 import { Component } from "@components/component.js";
 
 export class BoredAPISearchBox extends Component {
