@@ -13,17 +13,17 @@ export class BoredAPISearchBox extends Component {
   static get observedAttributes() {
     return ["max-results", "search-description"];
   }
+  static #DEFAULT_SEARCH_DESCRIPTION = "Search Bored API";
+  static #DEFAULT_MAX_RESULTS = 50;
 
-  static DEFAULT_SEARCH_DESCRIPTION = "Search Bored API";
-  static DEFAULT_MAX_RESULTS = 50;
-  iMaxResults;
-  iSearchDescription;
+  #iMaxResults;
+  #iSearchDescription;
 
   constructor() {
     super();
-    this.iMaxResults = this.getAttribute("max-results") ?? BoredAPISearchBox.DEFAULT_MAX_RESULTS;
-    this.iSearchDescription =
-      this.getAttribute("search-description") ?? BoredAPISearchBox.DEFAULT_SEARCH_DESCRIPTION;
+    this.#iMaxResults = this.getAttribute("max-results") ?? BoredAPISearchBox.#DEFAULT_MAX_RESULTS;
+    this.#iSearchDescription =
+      this.getAttribute("search-description") ?? BoredAPISearchBox.#DEFAULT_SEARCH_DESCRIPTION;
     this.shadowRoot.appendChild(
       (() => {
         const types = typesModel.map((type) =>
@@ -55,12 +55,12 @@ export class BoredAPISearchBox extends Component {
 
         const template = document.createElement("template");
         template.innerHTML = html({
-          iSearchDescription: this.iSearchDescription,
+          iSearchDescription: this.#iSearchDescription,
           types: types,
           participants: participants,
           durations: durations,
           orderbys: orderbys,
-          iMaxResults: this.iMaxResults,
+          iMaxResults: this.#iMaxResults,
         });
         return template.content.cloneNode(true);
       })()
@@ -79,7 +79,7 @@ export class BoredAPISearchBox extends Component {
 
   #enforceMaxResultsAttribute() {
     if (!this.getAttribute("max-results")) {
-      this.shadowRoot.host.setAttribute("max-results", BoredAPISearchBox.DEFAULT_MAX_RESULTS);
+      this.shadowRoot.host.setAttribute("max-results", BoredAPISearchBox.#DEFAULT_MAX_RESULTS);
     }
   }
 
@@ -117,12 +117,12 @@ export class BoredAPISearchBox extends Component {
   }
 
   #newMaxResultsHandler({ maxResults }) {
-    this.iMaxResults = maxResults;
+    this.#iMaxResults = maxResults;
     this.shadowRoot.querySelector("#maxResults").value = maxResults;
   }
 
   #searchDescriptionHandler({ searchDescription }) {
-    this.iSearchDescription = searchDescription;
+    this.#iSearchDescription = searchDescription;
     this.shadowRoot.querySelector("#searchDescription").textContent = searchDescription;
   }
 }

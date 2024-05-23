@@ -4,18 +4,20 @@ import { Component } from "@components/component.js";
 import { utils } from "../../utils/utils.js";
 
 export class BoredAPISearchResults extends Component {
-  results = [];
-  resultsContainer;
-  emptyResultset;
-  static EMPTY_RESULTSET = "Empty resultset";
+  static #EMPTY_RESULTSET = "Empty resultset";
+
+  #results = [];
+  #resultsContainer;
+  #emptyResultset;
+
   constructor() {
     super();
     this.shadowRoot.appendChild(
       (() => {
         const template = document.createElement("template");
         template.innerHTML = html({
-          results: this.results,
-          emptyResultset: BoredAPISearchResults.EMPTY_RESULTSET,
+          results: this.#results,
+          emptyResultset: BoredAPISearchResults.#EMPTY_RESULTSET,
         });
         return template.content.cloneNode(true);
       })()
@@ -23,8 +25,8 @@ export class BoredAPISearchResults extends Component {
   }
 
   connectedCallback() {
-    this.resultsContainer = this.shadowRoot.querySelector("#results");
-    this.emptyResultset = this.shadowRoot.querySelector("#empty-resultset");
+    this.#resultsContainer = this.shadowRoot.querySelector("#results");
+    this.#emptyResultset = this.shadowRoot.querySelector("#empty-resultset");
     this.addEventListener("newSearchQueryEvent", (event) =>
       this.#newSearchQueryHandler(event.detail)
     );
@@ -88,9 +90,9 @@ export class BoredAPISearchResults extends Component {
   }
 
   #unsetResults() {
-    this.results = [];
-    this.resultsContainer.innerHTML = null;
-    this.emptyResultset.textContent = BoredAPISearchResults.EMPTY_RESULTSET;
+    this.#results = [];
+    this.#resultsContainer.innerHTML = null;
+    this.#emptyResultset.textContent = BoredAPISearchResults.#EMPTY_RESULTSET;
   }
 
   #setResults(results) {
@@ -98,10 +100,9 @@ export class BoredAPISearchResults extends Component {
       this.#unsetResults();
       return;
     }
-    this.results = results;
-    console.log(this.results);
-    this.emptyResultset.textContent = null;
-    this.resultsContainer.innerHTML = results
+    this.#results = results;
+    this.#emptyResultset.textContent = null;
+    this.#resultsContainer.innerHTML = results
       .map((result) =>
         htmlResult({
           activity: result.activity,
