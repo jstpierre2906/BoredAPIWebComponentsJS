@@ -117,15 +117,16 @@ export class BoredAPISearchResults extends Component {
       )
       .join("");
 
-    const maxResults = this.findComponent({ selector: "boredapi-searchbox" }).getAttribute(
-      "max-results"
-    );
+    const headerContainer = document.querySelector("#header-container");
+    const searchBox = this.findComponent({ selector: "boredapi-searchbox" });
+    const maxResults = searchBox.getAttribute("max-results");
     const spanLinks = this.shadowRoot.querySelectorAll("div.result > ul > li > span.link");
     Array.from(spanLinks).forEach((link) => {
       link.addEventListener("click", () => {
         this.#newSearchQueryHandler({
           searchQuery: Object.assign({}, link.dataset, { maxResults: maxResults }),
         });
+        headerContainer.scrollIntoView({ behavior: "smooth" });
       });
     });
   }

@@ -69,7 +69,7 @@ export class BoredAPISearchBox extends Component {
 
   connectedCallback() {
     this.#setSearchButtonEventListener();
-    this.#enforceMaxResultsAttribute();
+    this.#setMaxResultsAttribute();
   }
 
   #setSearchButtonEventListener() {
@@ -77,7 +77,7 @@ export class BoredAPISearchBox extends Component {
     searchButton.addEventListener("click", (_event) => this.#searchQueryHandler());
   }
 
-  #enforceMaxResultsAttribute() {
+  #setMaxResultsAttribute() {
     if (!this.getAttribute("max-results")) {
       this.shadowRoot.host.setAttribute("max-results", BoredAPISearchBox.#DEFAULT_MAX_RESULTS);
     }
