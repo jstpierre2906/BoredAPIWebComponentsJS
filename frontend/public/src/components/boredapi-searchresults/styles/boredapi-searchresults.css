@@ -3,11 +3,16 @@
 :host > div > h2#resultsDescription {
   color: var(--color_green);
   font-weight: normal;
+  margin-bottom: 0;
+}
+
+:host > div > div#empty-resultset {
+  margin-top: 1em;
 }
 
 :host > div > div#results > div.result {
   padding: 0.3em;
-  margin: 1.5em 0px;
+  margin: 0 0 1.5em 0px;
   border-radius: 1em;
 }
 
