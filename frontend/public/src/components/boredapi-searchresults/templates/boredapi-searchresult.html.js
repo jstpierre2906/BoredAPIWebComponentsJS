@@ -1,5 +1,5 @@
 const htmlLink = ({ link }) => /*html*/ `
-  <ul class="thirdRow">
+  <ul>
     <li class="left">
       <span class="label">Link:</span>
       <a href="${link}" target="_blank">${link}</a>
@@ -18,8 +18,8 @@ export const htmlResult = ({
   link,
 }) => /*html*/ `
 <div class="result">
-  <h3>${activity}</h3>
-  <ul class="firstRow">
+  <dl><dt>${activity}</dt></dl>
+  <ul>
     <li class="left">
       <span class="label">ID: </span>
       ${key}
@@ -29,7 +29,7 @@ export const htmlResult = ({
       <span class="link" data-type="${typeRaw}">${type}</span>
     </li>
   </ul>
-  <ul class="secondRow">
+  <ul>
     <li class="left">
       <span class="label">Participants: </span>
       <span class="link" data-participants="${participants}">${participants}</span>

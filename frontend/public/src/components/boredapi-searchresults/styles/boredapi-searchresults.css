@@ -20,18 +20,15 @@
   background-color: var(--color_very-light-green);
 }
 
-:host > div > div#results > div.result > h3 {
+:host > div > div#results > div.result > dl > dt {
   font-weight: normal;
+  font-size: 1.2em;
   margin: 0.5em 0px 0.2em 0px;
-}
-
-:host > div > div#results > div.result > h3::before {
-  content: "- ";
 }
 
 :host > div > div#results > div.result > ul {
   list-style-type: none;
-  padding-inline-start: 0.8em;
+  padding-inline-start: 0;
   margin-block-start: 0em;
   margin-block-end: 0.2em;
 }
@@ -61,6 +58,7 @@
   :host > div > div#results {
     display: flex;
     flex-flow: wrap;
+    margin-left: -1em;
   }
 
   :host > div > div#results > div.result {
