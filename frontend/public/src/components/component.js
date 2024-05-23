@@ -4,15 +4,14 @@ export class Component extends HTMLElement {
   /** @param {{[key: string]: () => void}} actions */
   applyActions = (actions) => Object.keys(actions).forEach((k) => actions[k]());
 
-  /** @param {{events: string[]}} */
+  /**
+   * @deprecated
+   * @param {{events: string[]}}
+   */
   addListeners = ({ events }) => {
     events.forEach((event) =>
       this.addEventListener(event, (e) => this[event.replace("Event", "Handler")](e.detail))
     );
-  };
-
-  setChooseSelectOption = ({ arr, tpl, label }) => {
-    arr.unshift(tpl.replace("{value}", "").replace("{textContent}", `Choose ${label}`));
   };
 
   /**

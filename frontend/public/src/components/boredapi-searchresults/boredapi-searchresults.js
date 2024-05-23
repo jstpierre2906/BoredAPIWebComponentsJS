@@ -25,16 +25,18 @@ export class BoredAPISearchResults extends Component {
   connectedCallback() {
     this.resultsContainer = this.shadowRoot.querySelector("#results");
     this.emptyResultset = this.shadowRoot.querySelector("#empty-resultset");
-    this.addListeners({ events: ["newSearchQueryEvent"] });
+    this.addEventListener("newSearchQueryEvent", (event) =>
+      this.#newSearchQueryHandler(event.detail)
+    );
   }
 
-  newSearchQueryHandler({ searchQuery }) {
-    this.fetchResults(searchQuery)
-      .then((results) => this.setResults(results))
-      .catch((error) => this.unsetResults());
+  #newSearchQueryHandler({ searchQuery }) {
+    this.#fetchResults(searchQuery)
+      .then((results) => this.#setResults(results))
+      .catch((error) => this.#unsetResults());
   }
 
-  fetchResults(searchQuery) {
+  #fetchResults(searchQuery) {
     const queryString = Object.keys(searchQuery)
       .filter((key) => searchQuery[key] !== "")
       .map((key) => `${key}=${searchQuery[key]}`)
@@ -85,15 +87,15 @@ export class BoredAPISearchResults extends Component {
     });
   }
 
-  unsetResults() {
+  #unsetResults() {
     this.results = [];
     this.resultsContainer.innerHTML = null;
     this.emptyResultset.textContent = BoredAPISearchResults.EMPTY_RESULTSET;
   }
 
-  setResults(results) {
+  #setResults(results) {
     if (results.length === 0) {
-      this.unsetResults();
+      this.#unsetResults();
       return;
     }
     this.results = results;
@@ -120,7 +122,7 @@ export class BoredAPISearchResults extends Component {
     const spanLinks = this.shadowRoot.querySelectorAll("div.result > ul > li > span.link");
     Array.from(spanLinks).forEach((link) => {
       link.addEventListener("click", () => {
-        this.newSearchQueryHandler({
+        this.#newSearchQueryHandler({
           searchQuery: Object.assign({}, link.dataset, { maxResults: maxResults }),
         });
       });

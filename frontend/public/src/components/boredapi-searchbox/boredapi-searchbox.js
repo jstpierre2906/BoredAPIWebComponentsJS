@@ -13,10 +13,12 @@ export class BoredAPISearchBox extends Component {
   static get observedAttributes() {
     return ["max-results", "search-description"];
   }
+
   static DEFAULT_SEARCH_DESCRIPTION = "Search Bored API";
   static DEFAULT_MAX_RESULTS = 50;
   iMaxResults;
   iSearchDescription;
+
   constructor() {
     super();
     this.iMaxResults = this.getAttribute("max-results") ?? BoredAPISearchBox.DEFAULT_MAX_RESULTS;
@@ -63,22 +65,25 @@ export class BoredAPISearchBox extends Component {
         return template.content.cloneNode(true);
       })()
     );
-    this.setSearchButtonEventListener();
-    this.enforceMaxResultsAttribute();
   }
 
-  setSearchButtonEventListener() {
+  connectedCallback() {
+    this.#setSearchButtonEventListener();
+    this.#enforceMaxResultsAttribute();
+  }
+
+  #setSearchButtonEventListener() {
     const searchButton = this.shadowRoot.querySelector("#searchBtn");
-    searchButton.addEventListener("click", (_event) => this.searchQueryHandler());
+    searchButton.addEventListener("click", (_event) => this.#searchQueryHandler());
   }
 
-  enforceMaxResultsAttribute() {
+  #enforceMaxResultsAttribute() {
     if (!this.getAttribute("max-results")) {
       this.shadowRoot.host.setAttribute("max-results", BoredAPISearchBox.DEFAULT_MAX_RESULTS);
     }
   }
 
-  searchQueryHandler() {
+  #searchQueryHandler() {
     const searchQuery = {};
     this.applyActions({
       setData: () => {
@@ -104,19 +109,19 @@ export class BoredAPISearchBox extends Component {
   attributeChangedCallback(name, oldValue, newValue) {
     switch (true) {
       case name === "max-results":
-        this.newMaxResultsHandler({ maxResults: newValue });
+        this.#newMaxResultsHandler({ maxResults: newValue });
         break;
       case name === "search-description":
-        this.searchDescriptionHandler({ searchDescription: newValue });
+        this.#searchDescriptionHandler({ searchDescription: newValue });
     }
   }
 
-  newMaxResultsHandler({ maxResults }) {
+  #newMaxResultsHandler({ maxResults }) {
     this.iMaxResults = maxResults;
     this.shadowRoot.querySelector("#maxResults").value = maxResults;
   }
 
-  searchDescriptionHandler({ searchDescription }) {
+  #searchDescriptionHandler({ searchDescription }) {
     this.iSearchDescription = searchDescription;
     this.shadowRoot.querySelector("#searchDescription").textContent = searchDescription;
   }
