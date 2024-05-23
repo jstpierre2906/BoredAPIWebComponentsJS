@@ -14,13 +14,12 @@ export class BoredAPISearchBox extends Component {
     return ["max-results", "search-description"];
   }
   static DEFAULT_SEARCH_DESCRIPTION = "Search Bored API";
+  static DEFAULT_MAX_RESULTS = 50;
   iMaxResults;
   iSearchDescription;
   constructor() {
     super();
-    this.iMaxResults = !isNaN(this.getAttribute("max-results"))
-      ? +this.getAttribute("max-results")
-      : 50;
+    this.iMaxResults = this.getAttribute("max-results") ?? BoredAPISearchBox.DEFAULT_MAX_RESULTS;
     this.iSearchDescription =
       this.getAttribute("search-description") ?? BoredAPISearchBox.DEFAULT_SEARCH_DESCRIPTION;
     this.shadowRoot.appendChild(
@@ -102,7 +101,7 @@ export class BoredAPISearchBox extends Component {
   }
 
   newMaxResultsHandler({ maxResults }) {
-    this.iMaxResults = +maxResults;
+    this.iMaxResults = maxResults;
     this.shadowRoot.querySelector("#maxResults").value = maxResults;
   }
 

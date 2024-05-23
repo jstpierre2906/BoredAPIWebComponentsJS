@@ -1,3 +1,4 @@
+import { BoredAPISearchBox } from "@components/boredapi-searchbox/boredapi-searchbox.js";
 import { htmlResult } from "@components/boredapi-searchresults/templates/boredapi-searchresult.html.js";
 import { html } from "@components/boredapi-searchresults/templates/boredapi-searchresults.html.js";
 import { Component } from "@components/component.js";
@@ -31,10 +32,7 @@ export class BoredAPISearchResults extends Component {
   newSearchQueryHandler({ searchQuery }) {
     this.fetchResults(searchQuery)
       .then((results) => this.setResults(results))
-      .catch((error) => {
-        console.log(error);
-        this.unsetResults();
-      });
+      .catch((error) => this.unsetResults());
   }
 
   fetchResults(searchQuery) {
@@ -108,11 +106,26 @@ export class BoredAPISearchResults extends Component {
           activity: result.activity,
           key: result.key,
           type: utils.setDisplay.types(result.type),
+          typeRaw: result.type,
           participants: result.participants,
           duration: utils.setDisplay.durations(result.duration),
+          durationRaw: result.duration,
           link: result.link ?? "",
         })
       )
       .join("");
+
+    const maxResults =
+      this.findComponent({ selector: "boredapi-searchbox" }).getAttribute("max-results") ??
+      BoredAPISearchBox.DEFAULT_MAX_RESULTS;
+
+    const spanLinks = this.shadowRoot.querySelectorAll("div.result > ul > li > span.link");
+    Array.from(spanLinks).forEach((link) => {
+      link.addEventListener("click", () => {
+        this.newSearchQueryHandler({
+          searchQuery: Object.assign({}, link.dataset, { maxResults: maxResults }),
+        });
+      });
+    });
   }
 }

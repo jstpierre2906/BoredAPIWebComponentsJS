@@ -40,6 +40,14 @@
   min-width: 10em;
 }
 
+:host > div > div#results > div.result > ul > li span.link {
+  cursor: pointer;
+}
+
+:host > div > div#results > div.result > ul > li span.link:hover {
+  text-decoration: underline;
+}
+
 :host > div > div#results > div.result > ul > li > span.label {
   color: var(--color_green);
 }
