@@ -63,8 +63,19 @@ export class BoredAPISearchBox extends Component {
         return template.content.cloneNode(true);
       })()
     );
+    this.setSearchButtonEventListener();
+    this.enforceMaxResultsAttribute();
+  }
+
+  setSearchButtonEventListener() {
     const searchButton = this.shadowRoot.querySelector("#searchBtn");
     searchButton.addEventListener("click", (_event) => this.searchQueryHandler());
+  }
+
+  enforceMaxResultsAttribute() {
+    if (!this.getAttribute("max-results")) {
+      this.shadowRoot.host.setAttribute("max-results", BoredAPISearchBox.DEFAULT_MAX_RESULTS);
+    }
   }
 
   searchQueryHandler() {
