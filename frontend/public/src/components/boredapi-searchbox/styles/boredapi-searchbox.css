@@ -6,7 +6,7 @@
 
 :host > div > form {
   padding: 0.5em;
-  border: 2px solid var(--color_green);
+  border: 1px solid var(--color_green);
   border-radius: 0.8em;
 }
 

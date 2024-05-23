@@ -34,14 +34,21 @@ div#container > div#searchresults-container {
 @media (min-width: 768px) /* and (max-width: 1024px) */ {
   div#container {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 2fr;
     grid-template-rows: auto;
     grid-template-areas:
-      "header header "
+      "header header"
       "searchbox searchresults";
   }
+
   div#container > div#searchbox-container {
     border-bottom: 0px;
     padding-bottom: 0px;
+  }
+
+  div#container > div#searchresults-container {
+    padding-left: 2em;
+    margin-left: 2em;
+    border-left: 1px solid var(--color_green);
   }
 }

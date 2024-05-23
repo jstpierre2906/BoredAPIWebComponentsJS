@@ -51,3 +51,18 @@
 :host > div > div#results > div.result > ul > li > span.label {
   color: var(--color_green);
 }
+
+@media (min-width: 768px) /* and (max-width: 1024px) */ {
+  :host > div > div#results {
+    display: flex;
+    flex-flow: wrap;
+  }
+
+  :host > div > div#results > div.result {
+    margin: 1em;
+    border-bottom: 1px solid var(--color_green);
+    border-radius: 0;
+    min-width: 20em;
+    max-width: 20em;
+  }
+}
