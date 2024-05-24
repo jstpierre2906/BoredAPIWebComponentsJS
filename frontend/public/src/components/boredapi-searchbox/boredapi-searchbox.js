@@ -136,6 +136,9 @@ export class BoredAPISearchBox extends Component {
         break;
       case name === "search-description":
         this.#searchDescriptionHandler({ searchDescription: newValue });
+        break;
+      case name === "search-fields":
+        this.#searchFieldsHandler({ searchFields: newValue });
     }
   }
 
@@ -147,5 +150,11 @@ export class BoredAPISearchBox extends Component {
   #searchDescriptionHandler({ searchDescription }) {
     this.#iSearchDescription = searchDescription;
     this.shadowRoot.querySelector("#searchDescription").textContent = searchDescription;
+  }
+
+  #searchFieldsHandler({ searchFields }) {
+    this.#iSearchFields = BoredAPISearchBox.#setSearchFields(searchFields);
+    console.log(this.#iSearchFields);
+    // TODO Modify form fields accordingly
   }
 }
