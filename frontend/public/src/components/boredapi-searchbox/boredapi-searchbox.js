@@ -11,33 +11,56 @@ import { utils } from "../../utils/utils.js";
 
 export class BoredAPISearchBox extends Component {
   static get observedAttributes() {
-    return ["max-results", "search-description"];
+    return ["max-results", "search-description", "search-fields"];
   }
+
+  static #setSearchFields = (searchFieldsAttribute) => {
+    try {
+      return searchFieldsAttribute ? JSON.parse(searchFieldsAttribute.replace(/'/g, '"')) : null;
+    } catch (_error) {
+      return null;
+    }
+  };
+
   static #DEFAULT_SEARCH_DESCRIPTION = "Search Bored API";
   static #DEFAULT_MAX_RESULTS = 50;
 
   #iMaxResults;
   #iSearchDescription;
+  #iSearchFields;
 
   constructor() {
     super();
     this.#iMaxResults = this.getAttribute("max-results") ?? BoredAPISearchBox.#DEFAULT_MAX_RESULTS;
     this.#iSearchDescription =
       this.getAttribute("search-description") ?? BoredAPISearchBox.#DEFAULT_SEARCH_DESCRIPTION;
+    this.#iSearchFields = BoredAPISearchBox.#setSearchFields(this.getAttribute("search-fields"));
     this.shadowRoot.appendChild(
       (() => {
         const types = typesModel.map((type) =>
-          htmlSelectOption({ value: type, textContent: utils.setDisplay.types(type) })
+          htmlSelectOption({
+            value: type,
+            selected: type === this.#iSearchFields?.type,
+            textContent: utils.setDisplay.types(type),
+          })
         );
         types.unshift(htmlSelectOption({ textContent: "Choose type" }));
 
         const participants = participantsModel.map((qty) =>
-          htmlSelectOption({ value: qty, textContent: utils.setDisplay.participants(qty) })
+          htmlSelectOption({
+            value: qty,
+            selected: qty === this.#iSearchFields?.participants.toString(),
+            textContent: utils.setDisplay.participants(qty),
+          })
         );
         participants.unshift(htmlSelectOption({ textContent: "Choose participants" }));
 
         const durations = durationsModel.map((duration) =>
-          htmlSelectOption({ value: duration, textContent: utils.setDisplay.durations(duration) })
+          htmlSelectOption({
+            value: duration,
+            selected: duration === this.#iSearchFields?.duration,
+            textContent: utils.setDisplay.durations(duration),
+          })
         );
         durations.unshift(htmlSelectOption({ textContent: "Choose duration" }));
 

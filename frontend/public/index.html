@@ -16,7 +16,10 @@
         <h1>Bored API <span>(w/ Web Components and Java HttpServer)</span></h1>
       </div>
       <div id="searchbox-container">
-        <boredapi-searchbox max-results="30"></boredapi-searchbox>
+        <boredapi-searchbox
+          search-fields="{ 'type': 'diy', 'participants': 1, 'duration': 'minutes' }"
+          max-results="30"
+        ></boredapi-searchbox>
       </div>
       <div id="searchresults-container">
         <boredapi-searchresults></boredapi-searchresults>
