@@ -1,7 +1,11 @@
 @import "/styles/vars.css";
 
+body {
+  background-color: var(--color__body-background);
+}
+
 div#container {
-  color: var(--color_blue);
+  color: var(--color__blue);
   font-family: sans-serif;
   font-size: 14px;
   box-sizing: border-box;
@@ -23,7 +27,7 @@ div#container > div#header-container > h1 > span {
 
 div#container > div#searchbox-container {
   grid-area: searchbox;
-  border-bottom: 1px solid var(--color_blue);
+  border-bottom: 1px solid var(--color__blue);
   padding-bottom: 1em;
 }
 
@@ -49,6 +53,6 @@ div#container > div#searchresults-container {
   div#container > div#searchresults-container {
     padding-left: 2em;
     margin-left: 2em;
-    border-left: 1px solid var(--color_green);
+    border-left: 1px solid var(--color__green);
   }
 }

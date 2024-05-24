@@ -1,7 +1,7 @@
 @import "/styles/vars.css";
 
 :host > div > h2#resultsDescription {
-  color: var(--color_green);
+  color: var(--color__green);
   font-weight: normal;
   margin-bottom: 0;
 }
@@ -17,7 +17,7 @@
 }
 
 :host > div > div#results > div.result:hover {
-  background-color: var(--color_very-light-green);
+  background-color: var(--color__very-light-green);
 }
 
 :host > div > div#results > div.result > dl > dt {
@@ -51,7 +51,7 @@
 }
 
 :host > div > div#results > div.result > ul > li > span.label {
-  color: var(--color_green);
+  color: var(--color__green);
 }
 
 @media (min-width: 768px) /* and (max-width: 1024px) */ {
@@ -63,7 +63,7 @@
 
   :host > div > div#results > div.result {
     margin: 1em;
-    border-bottom: 1px solid var(--color_green);
+    border-bottom: 1px solid var(--color__green);
     border-radius: 0;
     min-width: 20em;
     max-width: 20em;

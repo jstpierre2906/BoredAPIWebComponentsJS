@@ -1,12 +1,12 @@
 :host > div > h2#searchDescription {
-  color: var(--color_green);
+  color: var(--color__green);
   font-weight: normal;
   margin-bottom: 0.2em;
 }
 
 :host > div > form {
   padding: 0.5em;
-  border: 1px solid var(--color_green);
+  border: 1px solid var(--color__green);
   border-radius: 0.8em;
 }
 
@@ -15,16 +15,16 @@
 }
 
 :host > div > form > div > label {
-  color: var(--color_green);
+  color: var(--color__green);
   display: block;
 }
 
 :host > div > form > div > input,
 :host > div > form > div > select {
-  color: var(--color_blue);
+  color: var(--color__blue);
   padding: 0.2em;
   background-color: white;
-  border: 1px solid var(--color_green);
+  border: 1px solid var(--color__green);
   border-radius: 0.4em;
 }
 
