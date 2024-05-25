@@ -183,7 +183,7 @@ export class BoredAPISearchBox extends Component {
      * @returns {boolean}
      */
     const modelIncludesSearchValue = (model, key) => model.includes(`${this.#iSearchFields[key]}`);
-    Object.keys(this.#iSearchFields)
+    this.#iSearchFields && Object.keys(this.#iSearchFields)
       .filter((key) => BoredAPISearchBox.#SEARCH_FIELDS_ATTRIBUTES.includes(key))
       .filter((key) => {
         switch (true) {
