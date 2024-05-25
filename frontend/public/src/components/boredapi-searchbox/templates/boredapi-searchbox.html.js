@@ -1,3 +1,14 @@
+/**
+ * @param {{
+ *  iSearchDescription: string;
+ *  types: string[];
+ *  participants: string[];
+ *  durations: string[];
+ *  orderbys: string[];
+ *  iMaxResults: string | number;
+ * }}
+ * @returns {HTMLDivElement as string}
+ */
 export const html = ({
   iSearchDescription,
   types,

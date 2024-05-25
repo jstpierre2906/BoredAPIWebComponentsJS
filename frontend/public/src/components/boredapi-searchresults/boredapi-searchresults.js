@@ -32,12 +32,17 @@ export class BoredAPISearchResults extends Component {
     );
   }
 
+  /** @param {{ searchQuery: string }} */
   #newSearchQueryHandler({ searchQuery }) {
     this.#fetchResults(searchQuery)
       .then((results) => this.#setResults(results))
       .catch((error) => this.#unsetResults());
   }
 
+  /**
+   * @param {string} searchQuery
+   * @returns {string[]}
+   */
   #fetchResults(searchQuery) {
     const queryString = Object.keys(searchQuery)
       .filter((key) => searchQuery[key] !== "")
@@ -95,6 +100,7 @@ export class BoredAPISearchResults extends Component {
     this.#emptyResultset.textContent = BoredAPISearchResults.#EMPTY_RESULTSET;
   }
 
+  /** @param {string[]} results */
   #setResults(results) {
     if (results.length === 0) {
       this.#unsetResults();

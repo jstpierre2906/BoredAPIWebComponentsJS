@@ -1,3 +1,7 @@
+/**
+ * @param {{ link: string }}
+ * @returns {HTMLUListElement as string}
+ */
 const htmlLink = ({ link }) => /*html*/ `
   <ul>
     <li class="left">
@@ -7,6 +11,19 @@ const htmlLink = ({ link }) => /*html*/ `
   </ul>
 `;
 
+/**
+ * @param {{
+ *  activity: string;
+ *  key: string;
+ *  type: string;
+ *  typeRaw: string;
+ *  participants: string;
+ *  duration: string;
+ *  durationRaw: string;
+ *  link: string;
+ * }}
+ * @returns {HTMLDivElement as string}
+ */
 export const htmlResult = ({
   activity,
   key,

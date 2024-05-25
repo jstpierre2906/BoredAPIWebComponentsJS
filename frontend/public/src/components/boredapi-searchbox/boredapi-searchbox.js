@@ -16,6 +16,10 @@ export class BoredAPISearchBox extends Component {
   static get observedAttributes() {
     return ["max-results", "search-description", "search-fields"];
   }
+  /**
+   * @param {string} searchFieldsAttribute
+   * @returns Object | null
+   */
   static #setSearchFields = (searchFieldsAttribute) => {
     try {
       if (!searchFieldsAttribute) {
@@ -135,6 +139,11 @@ export class BoredAPISearchBox extends Component {
     });
   }
 
+  /**
+   * @param {string} name
+   * @param {string} oldValue
+   * @param {string} newValue
+   */
   attributeChangedCallback(name, oldValue, newValue) {
     switch (true) {
       case name === "max-results":
@@ -148,16 +157,19 @@ export class BoredAPISearchBox extends Component {
     }
   }
 
+  /** @param {{ maxResults: string }} */
   #newMaxResultsHandler({ maxResults }) {
     this.#iMaxResults = maxResults;
     this.shadowRoot.querySelector("#maxResults").value = maxResults;
   }
 
+  /** @param {{ searchDescription: string }} */
   #searchDescriptionHandler({ searchDescription }) {
     this.#iSearchDescription = searchDescription;
     this.shadowRoot.querySelector("#searchDescription").textContent = searchDescription;
   }
 
+  /** @param {{ searchFields: string }} */
   #searchFieldsHandler({ searchFields }) {
     this.#iSearchFields = BoredAPISearchBox.#setSearchFields(searchFields);
     const newValues = {
@@ -165,6 +177,11 @@ export class BoredAPISearchBox extends Component {
       participants: null,
       duration: null,
     };
+    /**
+     * @param {string[]} model
+     * @param {string} key
+     * @returns {boolean}
+     */
     const modelIncludesSearchValue = (model, key) => model.includes(`${this.#iSearchFields[key]}`);
     Object.keys(this.#iSearchFields)
       .filter((key) => BoredAPISearchBox.#SEARCH_FIELDS_ATTRIBUTES.includes(key))
@@ -181,12 +198,20 @@ export class BoredAPISearchBox extends Component {
       })
       .forEach((key) => (newValues[key] = this.#iSearchFields[key]));
 
+    /**
+     * @param {HTMLOptionElement[]} options
+     * @param {string} key
+     */
     const removeCurrentSelectedAttribute = (options, key) => {
       options
         .filter((option) => option.value !== newValues[key])
         .find((option) => option.hasAttribute("selected"))
         ?.removeAttribute("selected");
     };
+    /**
+     * @param {HTMLOptionElement[]} options
+     * @param {string} key
+     */
     const addNewSelectedAttribute = (options, key) => {
       options
         .find((option) => option.value === `${newValues[key]}`)
