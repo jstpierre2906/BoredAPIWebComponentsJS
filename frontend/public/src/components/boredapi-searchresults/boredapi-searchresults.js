@@ -128,10 +128,17 @@ export class BoredAPISearchResults extends Component {
     const maxResults = searchBox.getAttribute("max-results");
     const spanLinks = this.shadowRoot.querySelectorAll("div.result > ul > li > span.link");
     Array.from(spanLinks).forEach((link) => {
+      /** @returns {Single-key JSON as string} */
+      const searchBoxSearchFieldAttribute = () => {
+        return Object.keys(link.dataset)
+          .map((key) => `{'${key}': '${link.dataset[key]}'}`)
+          .reduce((_acc, curr) => (_acc += curr), "");
+      };
       link.addEventListener("click", () => {
         this.#newSearchQueryHandler({
           searchQuery: Object.assign({}, link.dataset, { maxResults: maxResults }),
         });
+        searchBox.setAttribute("search-fields", searchBoxSearchFieldAttribute());
         headerContainer.scrollIntoView({ behavior: "smooth" });
       });
     });
