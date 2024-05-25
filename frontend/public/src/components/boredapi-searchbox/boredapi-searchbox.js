@@ -10,20 +10,26 @@ import { Component } from "@components/component.js";
 import { utils } from "../../utils/utils.js";
 
 export class BoredAPISearchBox extends Component {
+  static #DEFAULT_SEARCH_DESCRIPTION = "Search Bored API";
+  static #DEFAULT_MAX_RESULTS = 50;
+  static #SEARCH_FIELDS_ATTRIBUTES = ["type", "participants", "duration"];
   static get observedAttributes() {
     return ["max-results", "search-description", "search-fields"];
   }
-
   static #setSearchFields = (searchFieldsAttribute) => {
     try {
-      return searchFieldsAttribute ? JSON.parse(searchFieldsAttribute.replace(/'/g, '"')) : null;
+      if (!searchFieldsAttribute) {
+        return null;
+      }
+      const searchFields = JSON.parse(searchFieldsAttribute.replace(/'/g, '"'));
+      Object.keys(searchFields)
+        .filter((key) => !BoredAPISearchBox.#SEARCH_FIELDS_ATTRIBUTES.includes(key))
+        .forEach((key) => delete searchFields[key]);
+      return Object.keys(searchFields).length >= 1 ? searchFields : null;
     } catch (_error) {
       return null;
     }
   };
-
-  static #DEFAULT_SEARCH_DESCRIPTION = "Search Bored API";
-  static #DEFAULT_MAX_RESULTS = 50;
 
   #iMaxResults;
   #iSearchDescription;
@@ -154,7 +160,42 @@ export class BoredAPISearchBox extends Component {
 
   #searchFieldsHandler({ searchFields }) {
     this.#iSearchFields = BoredAPISearchBox.#setSearchFields(searchFields);
-    console.log(this.#iSearchFields);
-    // TODO Modify form fields accordingly
+    const newValues = {
+      type: null,
+      participants: null,
+      duration: null,
+    };
+    const modelIncludesSearchValue = (model, key) => model.includes(`${this.#iSearchFields[key]}`);
+    Object.keys(this.#iSearchFields)
+      .filter((key) => BoredAPISearchBox.#SEARCH_FIELDS_ATTRIBUTES.includes(key))
+      .filter((key) => {
+        switch (true) {
+          case key === "type":
+            return modelIncludesSearchValue(typesModel, key);
+          case key === "participants":
+            return modelIncludesSearchValue(participantsModel, key);
+          case key === "duration":
+            return modelIncludesSearchValue(durationsModel, key);
+        }
+        return false;
+      })
+      .forEach((key) => (newValues[key] = this.#iSearchFields[key]));
+
+    const removeCurrentSelectedAttribute = (options, key) => {
+      options
+        .filter((option) => option.value !== newValues[key])
+        .find((option) => option.hasAttribute("selected"))
+        ?.removeAttribute("selected");
+    };
+    const addNewSelectedAttribute = (options, key) => {
+      options
+        .find((option) => option.value === `${newValues[key]}`)
+        ?.setAttribute("selected", true);
+    };
+    Object.keys(newValues).forEach((key) => {
+      const options = Array.from(this.shadowRoot.querySelectorAll(`select[id="${key}"] option`));
+      removeCurrentSelectedAttribute(options, key);
+      addNewSelectedAttribute(options, key);
+    });
   }
 }
