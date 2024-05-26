@@ -18,7 +18,7 @@ export class BoredAPISearchBox extends Component {
   }
   /**
    * @param {string} searchFieldsAttribute
-   * @returns Object | null
+   * @returns {Object | null}
    */
   static #setSearchFields = (searchFieldsAttribute) => {
     try {

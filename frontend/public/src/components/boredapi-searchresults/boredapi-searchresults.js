@@ -32,7 +32,7 @@ export class BoredAPISearchResults extends Component {
     );
   }
 
-  /** @param {{ searchQuery: string }} */
+  /** @param {{ searchQuery: Object }} */
   #newSearchQueryHandler({ searchQuery }) {
     this.#fetchResults(searchQuery)
       .then((results) => this.#setResults(results))
@@ -40,7 +40,9 @@ export class BoredAPISearchResults extends Component {
   }
 
   /**
-   * @param {string} searchQuery
+   * Mock back-end call; will be removed when back-end is up and running.
+   *
+   * @param {Object} searchQuery
    * @returns {string[]}
    */
   #fetchResults(searchQuery) {
@@ -49,7 +51,6 @@ export class BoredAPISearchResults extends Component {
       .map((key) => `${key}=${searchQuery[key]}`)
       .join("&");
     return new Promise((resolve, reject) => {
-      // Mock, remove settimeout after.
       setTimeout(() => {
         fetch(`/mock-data/activities.json?${queryString}`, {
           method: "GET",
