@@ -1,0 +1,12 @@
+[
+  {
+    "id": 1,
+    "greeting": "Hello, World",
+    "quote": "It's a beautiful day"
+  },
+  {
+    "id": 2,
+    "greeting": "How ya doing, hello to you !",
+    "quote": "It would've been nice if it was sunny"
+  }
+]

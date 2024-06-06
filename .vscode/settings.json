@@ -1,0 +1,7 @@
+{
+  "java.project.sourcePaths": ["backend/src/main/java"],
+  "java.project.referencedLibraries": ["/home/unbound/DESKTOP_THINGS/PROGRAMMING/java/libs/*"],
+  "java.dependency.packagePresentation": "hierarchical",
+  "java.project.explorer.showNonJavaResources": true,
+  "editor.detectIndentation": false
+}
