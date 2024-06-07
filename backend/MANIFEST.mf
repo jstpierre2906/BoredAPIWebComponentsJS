@@ -1,2 +1,0 @@
-Main-Class
-Specification-Version: 0.1.0
