@@ -1,8 +1,13 @@
-# Bored API with Web Components and HttpServer
+# Bored API Frontend with WebComponents
 
-## Having fun with both technologies
+## Part of a project to have fun with some Web technologies using the Bored API dataset
 
-Will do other projects based on the same dataset and logic, mainly:
+#### on the frontend:
 
-- same Web Components file structure but this time with Spring Boot ;
-- Angular with same Spring Boot file structure.
+- `WebComponents`
+- Angular
+
+#### on the backend:
+
+- HttpServer
+- Spring Boot

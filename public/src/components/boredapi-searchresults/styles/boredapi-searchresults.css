@@ -13,7 +13,7 @@
 :host > div > div#results > div.result {
   padding: 0.3em;
   margin: 0 0 1.5em 0px;
-  border-radius: 1em;
+  border-bottom: 1px solid var(--color__green);
 }
 
 :host > div > div#results > div.result:hover {
@@ -54,7 +54,7 @@
   color: var(--color__green);
 }
 
-@media (min-width: 768px) /* and (max-width: 1024px) */ {
+@media (min-width: 768px) {
   :host > div > div#results {
     display: flex;
     flex-flow: wrap;
@@ -63,8 +63,24 @@
 
   :host > div > div#results > div.result {
     margin: 1em;
-    border-bottom: 1px solid var(--color__green);
-    border-radius: 0;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1400px) {
+  :host > div > div#results > div.result {
+    width: 100%;
+  }
+}
+
+@media (min-width: 1400px) and (max-width: 1700px) {
+  :host > div > div#results > div.result {
+    min-width: 27em;
+    max-width: 27em;
+  }
+}
+
+@media (min-width: 1700px) {
+  :host > div > div#results > div.result {
     min-width: 20em;
     max-width: 20em;
   }
