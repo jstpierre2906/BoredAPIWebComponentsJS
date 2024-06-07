@@ -16,24 +16,6 @@ export class BoredAPISearchBox extends Component {
   static get observedAttributes() {
     return ["max-results", "search-description", "search-fields"];
   }
-  /**
-   * @param {string} searchFieldsAttribute
-   * @returns {Object | null}
-   */
-  static #setSearchFields = (searchFieldsAttribute) => {
-    try {
-      if (!searchFieldsAttribute) {
-        return null;
-      }
-      const searchFields = JSON.parse(searchFieldsAttribute.replace(/'/g, '"'));
-      Object.keys(searchFields)
-        .filter((key) => !BoredAPISearchBox.#SEARCH_FIELDS_ATTRIBUTES.includes(key))
-        .forEach((key) => delete searchFields[key]);
-      return Object.keys(searchFields).length >= 1 ? searchFields : null;
-    } catch (_error) {
-      return null;
-    }
-  };
 
   #iMaxResults;
   #iSearchDescription;
@@ -44,7 +26,7 @@ export class BoredAPISearchBox extends Component {
     this.#iMaxResults = this.getAttribute("max-results") ?? BoredAPISearchBox.#DEFAULT_MAX_RESULTS;
     this.#iSearchDescription =
       this.getAttribute("search-description") ?? BoredAPISearchBox.#DEFAULT_SEARCH_DESCRIPTION;
-    this.#iSearchFields = BoredAPISearchBox.#setSearchFields(this.getAttribute("search-fields"));
+    this.#iSearchFields = this.#setSearchFields(this.getAttribute("search-fields"));
     this.shadowRoot.appendChild(
       (() => {
         const types = typesModel.map((type) =>
@@ -104,6 +86,25 @@ export class BoredAPISearchBox extends Component {
     this.#setSearchButtonEventListener();
     this.#setMaxResultsAttribute();
   }
+
+  /**
+   * @param {string} searchFieldsAttribute
+   * @returns {Object | null}
+   */
+  #setSearchFields = (searchFieldsAttribute) => {
+    try {
+      if (!searchFieldsAttribute) {
+        return null;
+      }
+      const searchFields = JSON.parse(searchFieldsAttribute.replace(/'/g, '"'));
+      Object.keys(searchFields)
+        .filter((key) => !BoredAPISearchBox.#SEARCH_FIELDS_ATTRIBUTES.includes(key))
+        .forEach((key) => delete searchFields[key]);
+      return Object.keys(searchFields).length >= 1 ? searchFields : null;
+    } catch (_error) {
+      return null;
+    }
+  };
 
   #setSearchButtonEventListener() {
     const searchButton = this.shadowRoot.querySelector("#searchBtn");
@@ -171,7 +172,7 @@ export class BoredAPISearchBox extends Component {
 
   /** @param {{ searchFields: string }} */
   #searchFieldsHandler({ searchFields }) {
-    this.#iSearchFields = BoredAPISearchBox.#setSearchFields(searchFields);
+    this.#iSearchFields = this.#setSearchFields(searchFields);
     const newValues = {
       type: null,
       participants: null,
@@ -183,20 +184,21 @@ export class BoredAPISearchBox extends Component {
      * @returns {boolean}
      */
     const modelIncludesSearchValue = (model, key) => model.includes(`${this.#iSearchFields[key]}`);
-    this.#iSearchFields && Object.keys(this.#iSearchFields)
-      .filter((key) => BoredAPISearchBox.#SEARCH_FIELDS_ATTRIBUTES.includes(key))
-      .filter((key) => {
-        switch (true) {
-          case key === "type":
-            return modelIncludesSearchValue(typesModel, key);
-          case key === "participants":
-            return modelIncludesSearchValue(participantsModel, key);
-          case key === "duration":
-            return modelIncludesSearchValue(durationsModel, key);
-        }
-        return false;
-      })
-      .forEach((key) => (newValues[key] = this.#iSearchFields[key]));
+    this.#iSearchFields &&
+      Object.keys(this.#iSearchFields)
+        .filter((key) => BoredAPISearchBox.#SEARCH_FIELDS_ATTRIBUTES.includes(key))
+        .filter((key) => {
+          switch (true) {
+            case key === "type":
+              return modelIncludesSearchValue(typesModel, key);
+            case key === "participants":
+              return modelIncludesSearchValue(participantsModel, key);
+            case key === "duration":
+              return modelIncludesSearchValue(durationsModel, key);
+          }
+          return false;
+        })
+        .forEach((key) => (newValues[key] = this.#iSearchFields[key]));
 
     /**
      * @param {HTMLOptionElement[]} options
