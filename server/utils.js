@@ -1,6 +1,6 @@
 const utils = {
-  shouldBeLogged: (LOG_JS_FILES, request) => {
-    const evalFile = () => {
+  fileShouldBeLogged: ({ shouldLogJSFile, request }) => {
+    const evaluateFile = () => {
       if (request.url === "/") {
         return "IS_ROOT";
       }
@@ -8,7 +8,7 @@ const utils = {
         return "IS_HTML_FILE";
       }
       if (
-        LOG_JS_FILES &&
+        shouldLogJSFile &&
         false === /(templates|model)/.test(request.url) &&
         true === /components\/[a-z-]+\/[a-z-]+\.js$/.test(request.url)
       ) {
@@ -16,7 +16,8 @@ const utils = {
       }
       return "DO_NOT_LOG";
     };
-    switch (evalFile()) {
+    const evaluated = evaluateFile();
+    switch (evaluated) {
       case "IS_ROOT":
       case "IS_HTML_FILE":
       case "IS_JS_FILE_AND_SHOULD_BE_LOGGED":
@@ -24,6 +25,19 @@ const utils = {
       case "DO_NOT_LOG":
         return false;
     }
+  },
+  setFileLog: ({ str, request }) => {
+    return str
+      .replace("{date}", new Date().toISOString())
+      .replace("{method}", request.method)
+      .replace("{url}", request.url)
+      .replace("{sec-ch-ua}", request.headers["sec-ch-ua"] ?? "");
+  },
+  setServerStartLog: ({ str, host, port }) => {
+    return str
+      .replace("{host}", host)
+      .replace("{port}", port)
+      .replace("{date}", new Date().toISOString());
   },
 };
 
