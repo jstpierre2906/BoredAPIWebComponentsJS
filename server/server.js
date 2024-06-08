@@ -1,23 +1,18 @@
 const express = require("express");
 const path = require("path");
 
+const { shouldBeLogged } = require("./utils.js");
+
 const HOST = "127.0.0.1";
 const PORT = 9001;
 const ROOT_DIR = path.join(__dirname, "../public");
-const LOG_JS_FILES = false;
+const LOG_JS_FILES = true;
 
 const app = express();
 
 // STATIC FILES ---------------------------------------------------------------
-app.use((request, response, next) => {
-  const shouldBeLogged = () => {
-    return (
-      request.url === "/" ||
-      request.url.endsWith(".html") ||
-      (LOG_JS_FILES ? request.url.endsWith(".js") : false)
-    );
-  };
-  if (shouldBeLogged()) {
+app.use((request, _response, next) => {
+  if (shouldBeLogged(LOG_JS_FILES, request)) {
     const str = "{date} - {method} {url}";
     const log = str
       .replace("{date}", new Date().toISOString())
