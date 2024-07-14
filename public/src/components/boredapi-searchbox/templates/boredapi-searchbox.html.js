@@ -20,7 +20,7 @@ export const html = ({
 <link rel="stylesheet" href="/src/components/boredapi-searchbox/styles/boredapi-searchbox.css" />
 <div>
   <h2 id="searchDescription">${iSearchDescription}</h2>
-  <form>
+  <form id="search-form">
     <div>
       <label for="activityId">ID</label>
       <input type="number" id="activityId" maxlength="7" placeholder="0000000" />

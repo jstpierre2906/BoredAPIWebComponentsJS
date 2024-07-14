@@ -27,14 +27,14 @@ export class BoredAPISearchResults extends Component {
   connectedCallback() {
     this.#resultsContainer = this.shadowRoot.querySelector("#results");
     this.#emptyResultset = this.shadowRoot.querySelector("#empty-resultset");
-    this.addEventListener("newSearchQueryEvent", (event) =>
-      this.#newSearchQueryHandler(event.detail)
-    );
+    this.addEventListener("searchEvent", (event) => this.#searchHandler(event.detail));
   }
 
-  /** @param {{ searchQuery: Object }} */
-  #newSearchQueryHandler({ searchQuery }) {
-    this.#fetchResults(searchQuery)
+  /** @param {{ searchObj: Object }} */
+  #searchHandler({ searchObj }) {
+    console.log(searchObj);
+
+    this.#fetchResults(searchObj)
       .then((results) => this.#setResults(results))
       .catch((error) => this.#unsetResults());
   }
@@ -136,8 +136,8 @@ export class BoredAPISearchResults extends Component {
           .reduce((_acc, curr) => (_acc += curr), "");
       };
       link.addEventListener("click", () => {
-        this.#newSearchQueryHandler({
-          searchQuery: Object.assign({}, link.dataset, { maxResults: maxResults }),
+        this.#searchHandler({
+          searchObj: Object.assign({}, link.dataset, { maxResults: maxResults }),
         });
         searchBox.setAttribute("search-fields", searchBoxSearchFieldAttribute());
         headerContainer.scrollIntoView({ behavior: "smooth" });
