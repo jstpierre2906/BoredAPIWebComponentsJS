@@ -3,7 +3,7 @@ const path = require("path");
 
 const { fileShouldBeLogged, setFileLog, setServerStartLog } = require("./utils.js");
 
-const HOST = "127.0.0.1";
+const HOST = "localhost";
 const PORT = 9001;
 const ROOT_DIR = path.join(__dirname, "../public");
 const ROOT_PATH = "/";

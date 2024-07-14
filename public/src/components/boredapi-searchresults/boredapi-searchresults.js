@@ -34,7 +34,7 @@ export class BoredAPISearchResults extends Component {
   #searchHandler({ searchObj }) {
     /** @returns {Promise<string>} */
     (() => {
-      const apiURL = "http://127.0.0.1:9000/api/v0.9.4";
+      const apiURL = "http://localhost:9000/api/v0.9.4";
       let route = "";
       console.log(searchObj);
       const isFindAll = () => {
@@ -42,10 +42,12 @@ export class BoredAPISearchResults extends Component {
           .filter((k) => k !== "maxResults")
           .every((k) => searchObj[k] === "");
       };
-      if (isFindAll()) {
-        route = `${apiURL}/activities`;
-      } else {
-        return Promise.reject(new Error("Front-end API call not implemented yet"));
+      switch (true) {
+        case isFindAll():
+          route = `${apiURL}/activities`;
+          break;
+        default:
+          return Promise.reject(new Error("Front-end API call not implemented yet"));
       }
       return new Promise((resolve, reject) => {
         fetch(route, { method: "GET" })
