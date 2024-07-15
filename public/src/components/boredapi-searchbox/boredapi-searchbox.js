@@ -129,10 +129,9 @@ export class BoredAPISearchBox extends Component {
         ]
           .map((e) => `#search-form ${e}`)
           .join(", ");
-        const elementsList = this.shadowRoot.querySelectorAll(queryElements);
-        Array.from(elementsList)
-          .map((element) => element.id)
-          .forEach((id) => (searchObj[id] = this.shadowRoot.querySelector(`#${id}`).value));
+        Array.from(this.shadowRoot.querySelectorAll(queryElements))
+          .filter((element) => element.value !== "")
+          .forEach((element) => (searchObj[element.id] = element.value));
       },
       dispatchEvent: () => {
         this.findComponent({ selector: "boredapi-searchresults" }).dispatchEvent(

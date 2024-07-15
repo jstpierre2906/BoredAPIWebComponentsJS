@@ -38,10 +38,9 @@ export class BoredAPISearchResults extends Component {
         /** @returns {string} */
         generate() {
           console.log(searchObj);
-          const findAll = () =>
-            Object.keys(searchObj)
-              .filter((k) => k !== "maxResults")
-              .every((k) => searchObj[k] === "");
+          // TODO Better handling for max results to match backend, i.e. 5,15
+          const findAll = () => undefined === Object.keys(searchObj).find((k) => k !== "maxResults");
+          // TODO Put as disabled other fields when activityId field is focused
           const findOneById = () => /^\d+$/.test(searchObj.activityId);
           switch (true) {
             case findAll():
