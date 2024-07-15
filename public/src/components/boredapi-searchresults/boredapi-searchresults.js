@@ -6,7 +6,6 @@ import { utils } from "../../utils/utils.js";
 export class BoredAPISearchResults extends Component {
   static #EMPTY_RESULTSET = "Empty resultset";
 
-  #results = [];
   #resultsContainer;
   #emptyResultset;
 
@@ -16,7 +15,7 @@ export class BoredAPISearchResults extends Component {
       (() => {
         const template = document.createElement("template");
         template.innerHTML = html({
-          results: this.#results,
+          results: [],
           emptyResultset: BoredAPISearchResults.#EMPTY_RESULTSET,
         });
         return template.content.cloneNode(true);
@@ -37,14 +36,18 @@ export class BoredAPISearchResults extends Component {
       const apiURL = "http://localhost:9000/api/v0.9.4";
       let route = "";
       console.log(searchObj);
-      const isFindAll = () => {
+      const findAll = () => {
         return Object.keys(searchObj)
           .filter((k) => k !== "maxResults")
           .every((k) => searchObj[k] === "");
       };
+      const findOneById = () => /^\d+$/.test(searchObj.activityId);
       switch (true) {
-        case isFindAll():
+        case findAll():
           route = `${apiURL}/activities`;
+          break;
+        case findOneById():
+          route = `${apiURL}/activities/id/${searchObj.activityId}`;
           break;
         default:
           return Promise.reject(new Error("Front-end API call not implemented yet"));
@@ -69,33 +72,36 @@ export class BoredAPISearchResults extends Component {
   }
 
   #unsetResults() {
-    this.#results = [];
     this.#resultsContainer.innerHTML = null;
     this.#emptyResultset.textContent = BoredAPISearchResults.#EMPTY_RESULTSET;
   }
 
-  /** @param {string[]} results */
+  /** @param {string | string[]} results */
   #setResults(results) {
     if (results.length === 0) {
       this.#unsetResults();
       return;
     }
-    this.#results = results;
     this.#emptyResultset.textContent = null;
-    this.#resultsContainer.innerHTML = results
-      .map((result) =>
-        htmlResult({
-          activity: result.activity,
-          key: result.key,
-          type: utils.setDisplay.types(result.type),
-          typeRaw: result.type,
-          participants: result.participants,
-          duration: utils.setDisplay.durations(result.duration),
-          durationRaw: result.duration,
-          link: result.link ?? "",
-        })
-      )
-      .join("");
+    (() => {
+      const setValues = (result) => ({
+        activity: result.activity,
+        key: result.key,
+        type: utils.setDisplay.types(result.type),
+        typeRaw: result.type,
+        participants: result.participants,
+        duration: utils.setDisplay.durations(result.duration),
+        durationRaw: result.duration,
+        link: result.link ?? "",
+      });
+      if (Array.isArray(results)) {
+        this.#resultsContainer.innerHTML = results
+          .map((result) => htmlResult(setValues(result)))
+          .join("");
+        return;
+      }
+      this.#resultsContainer.innerHTML = htmlResult(setValues(results));
+    })();
 
     const headerContainer = document.querySelector("#header-container");
     const searchBox = this.findComponent({ selector: "boredapi-searchbox" });
