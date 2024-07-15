@@ -33,25 +33,31 @@ export class BoredAPISearchResults extends Component {
   #searchHandler({ searchObj }) {
     /** @returns {Promise<Object | Object[]>} */
     (() => {
-      const apiURL = "http://localhost:9000/api/v0.9.4";
-      let route = "";
-      console.log(searchObj);
-      const findAll = () =>
-        Object.keys(searchObj)
-          .filter((k) => k !== "maxResults")
-          .every((k) => searchObj[k] === "");
-      const findOneById = () => /^\d+$/.test(searchObj.activityId);
-      switch (true) {
-        case findAll():
-          route = `${apiURL}/activities`;
-          break;
-        case findOneById():
-          route = `${apiURL}/activities/id/${searchObj.activityId}`;
-          break;
-        default:
-          return Promise.reject(new Error("Front-end API call not implemented yet"));
+      class RouteGenerator {
+        apiURL = "http://localhost:9000/api/v0.9.4";
+        /** @returns {string} */
+        generate() {
+          console.log(searchObj);
+          const findAll = () =>
+            Object.keys(searchObj)
+              .filter((k) => k !== "maxResults")
+              .every((k) => searchObj[k] === "");
+          const findOneById = () => /^\d+$/.test(searchObj.activityId);
+          switch (true) {
+            case findAll():
+              return `${this.apiURL}/activities`;
+            case findOneById():
+              return `${this.apiURL}/activities/id/${searchObj.activityId}`;
+          }
+          return "";
+        }
       }
+      const route = new RouteGenerator().generate();
       return new Promise((resolve, reject) => {
+        if (!route) {
+          reject(new Error("Front-end API call not implemented yet"));
+          return;
+        }
         fetch(route, { method: "GET" })
           .then((response) => {
             if (response.status !== 200) {
@@ -65,7 +71,7 @@ export class BoredAPISearchResults extends Component {
     })()
       .then((resultset) => this.#setResults(resultset))
       .catch((error) => {
-        console.log(error);
+        console.error(error);
         this.#unsetResults();
       });
   }
@@ -101,7 +107,6 @@ export class BoredAPISearchResults extends Component {
       }
       this.#resultsContainer.innerHTML = htmlResult(setValues(resultset));
     })();
-
     const headerContainer = document.querySelector("#header-container");
     const searchBox = this.findComponent({ selector: "boredapi-searchbox" });
     const maxResults = searchBox.getAttribute("max-results");
