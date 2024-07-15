@@ -31,16 +31,15 @@ export class BoredAPISearchResults extends Component {
 
   /** @param {{ searchObj: Object }} */
   #searchHandler({ searchObj }) {
-    /** @returns {Promise<string>} */
+    /** @returns {Promise<Object | Object[]>} */
     (() => {
       const apiURL = "http://localhost:9000/api/v0.9.4";
       let route = "";
       console.log(searchObj);
-      const findAll = () => {
-        return Object.keys(searchObj)
+      const findAll = () =>
+        Object.keys(searchObj)
           .filter((k) => k !== "maxResults")
           .every((k) => searchObj[k] === "");
-      };
       const findOneById = () => /^\d+$/.test(searchObj.activityId);
       switch (true) {
         case findAll():
@@ -60,11 +59,11 @@ export class BoredAPISearchResults extends Component {
             }
             return response.json();
           })
-          .then((data) => resolve(data))
+          .then((resultset) => resolve(resultset))
           .catch((error) => reject(error));
       });
     })()
-      .then((results) => this.#setResults(results))
+      .then((resultset) => this.#setResults(resultset))
       .catch((error) => {
         console.log(error);
         this.#unsetResults();
@@ -76,31 +75,31 @@ export class BoredAPISearchResults extends Component {
     this.#emptyResultset.textContent = BoredAPISearchResults.#EMPTY_RESULTSET;
   }
 
-  /** @param {string | string[]} results */
-  #setResults(results) {
-    if (results.length === 0) {
+  /** @param {Object | Object[]} resultset */
+  #setResults(resultset) {
+    if (resultset.length === 0) {
       this.#unsetResults();
       return;
     }
     this.#emptyResultset.textContent = null;
     (() => {
-      const setValues = (result) => ({
-        activity: result.activity,
-        key: result.key,
-        type: utils.setDisplay.types(result.type),
-        typeRaw: result.type,
-        participants: result.participants,
-        duration: utils.setDisplay.durations(result.duration),
-        durationRaw: result.duration,
-        link: result.link ?? "",
+      const setValues = (resultsetObj) => ({
+        activity: resultsetObj.activity,
+        key: resultsetObj.key,
+        type: utils.setDisplay.types(resultsetObj.type),
+        typeRaw: resultsetObj.type,
+        participants: resultsetObj.participants,
+        duration: utils.setDisplay.durations(resultsetObj.duration),
+        durationRaw: resultsetObj.duration,
+        link: resultsetObj.link ?? "",
       });
-      if (Array.isArray(results)) {
-        this.#resultsContainer.innerHTML = results
-          .map((result) => htmlResult(setValues(result)))
+      if (Array.isArray(resultset)) {
+        this.#resultsContainer.innerHTML = resultset
+          .map((resultsetObj) => htmlResult(setValues(resultsetObj)))
           .join("");
         return;
       }
-      this.#resultsContainer.innerHTML = htmlResult(setValues(results));
+      this.#resultsContainer.innerHTML = htmlResult(setValues(resultset));
     })();
 
     const headerContainer = document.querySelector("#header-container");
