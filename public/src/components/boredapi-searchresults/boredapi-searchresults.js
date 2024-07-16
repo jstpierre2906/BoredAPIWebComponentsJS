@@ -39,14 +39,34 @@ export class BoredAPISearchResults extends Component {
         generate() {
           console.log(searchObj);
           // TODO Better handling for max results to match backend, i.e. 5,15
-          const findAll = () => undefined === Object.keys(searchObj).find((k) => k !== "maxResults");
-          // TODO Put as disabled other fields when activityId field is focused
-          const findOneById = () => /^\d+$/.test(searchObj.activityId);
+          const findAll = () => {
+            return undefined === Object.keys(searchObj).find((k) => k !== "maxResults");
+          };
+          // TODO Put as disabled other fields when activityId field is focused, same for description.
+          const findOneById = () => {
+            return searchObj.activityId && /^\d+$/.test(searchObj.activityId);
+          };
+          const findAllByDescription = () => {
+            return searchObj.description && /^[a-zA-Z0-9-\s]{1,32}$/.test(searchObj.description);
+          };
+          const findAllByType = () => {
+            return (
+              searchObj.type &&
+              // TODO get data from models
+              /^(busywork|charity|cooking|diy|education|music|recreational|relaxation|social)$/.test(
+                searchObj.type
+              )
+            );
+          };
           switch (true) {
             case findAll():
               return `${this.apiURL}/activities`;
             case findOneById():
               return `${this.apiURL}/activities/id/${searchObj.activityId}`;
+            case findAllByDescription():
+              return `${this.apiURL}/activities/description/${searchObj.description}`;
+            case findAllByType():
+              return `${this.apiURL}/activities/types/${searchObj.type}`;
           }
           return "";
         }
