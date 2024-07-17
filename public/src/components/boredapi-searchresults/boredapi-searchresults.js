@@ -1,6 +1,8 @@
+import { typesModel } from "@components/boredapi-searchbox/boredapi-searchbox.model.js";
 import { htmlResult } from "@components/boredapi-searchresults/templates/boredapi-searchresult.html.js";
 import { html } from "@components/boredapi-searchresults/templates/boredapi-searchresults.html.js";
 import { Component } from "@components/component.js";
+// TODO Add @utils
 import { utils } from "../../utils/utils.js";
 
 export class BoredAPISearchResults extends Component {
@@ -34,46 +36,60 @@ export class BoredAPISearchResults extends Component {
     /** @returns {Promise<Object | Object[]>} */
     (() => {
       class RouteGenerator {
-        apiURL = "http://localhost:9000/api/v0.9.4";
+        static #API_URL = "http://localhost:9000/api/v0.9.4";
+        static #ACTIVITIES = "activities";
+        #criteria = {
+          one: {
+            // TODO Put as disabled other fields when activityId field is focused, same for description.
+            byId: () => searchObj.activityId && /^\d{7}$/.test(searchObj.activityId),
+          },
+          all: {
+            passthrough: () => undefined === Object.keys(searchObj).find((k) => k !== "maxResults"),
+            byDesc: () => {
+              return searchObj.description && /^[a-zA-Z0-9-\s]{1,32}$/.test(searchObj.description);
+            },
+            byType: () => {
+              return (
+                searchObj.type && new RegExp(`^(${typesModel.join("|")})$`).test(searchObj.type)
+              );
+            },
+            byParticipants: () => {
+              return (
+                // TODO On the backend: handle + sign
+                searchObj.participants && /^(1|2|3|4|5|8|2\+|3\+|4\+)$/.test(searchObj.participants)
+              );
+            },
+          },
+        };
         /** @returns {string} */
         generate() {
           console.log(searchObj);
-          // TODO Better handling for max results to match backend, i.e. 5,15
-          const findAll = () => {
-            return undefined === Object.keys(searchObj).find((k) => k !== "maxResults");
-          };
-          // TODO Put as disabled other fields when activityId field is focused, same for description.
-          const findOneById = () => {
-            return searchObj.activityId && /^\d+$/.test(searchObj.activityId);
-          };
-          const findAllByDescription = () => {
-            return searchObj.description && /^[a-zA-Z0-9-\s]{1,32}$/.test(searchObj.description);
-          };
-          const findAllByType = () => {
-            return (
-              searchObj.type &&
-              // TODO get data from models
-              /^(busywork|charity|cooking|diy|education|music|recreational|relaxation|social)$/.test(
-                searchObj.type
-              )
-            );
-          };
           switch (true) {
-            case findAll():
-              return `${this.apiURL}/activities`;
-            case findOneById():
-              return `${this.apiURL}/activities/id/${searchObj.activityId}`;
-            case findAllByDescription():
-              return `${this.apiURL}/activities/description/${searchObj.description}`;
-            case findAllByType():
-              return `${this.apiURL}/activities/types/${searchObj.type}`;
+            case this.#criteria.all.passthrough():
+              return `${RouteGenerator.#API_URL}/${RouteGenerator.#ACTIVITIES}`;
+            case this.#criteria.one.byId():
+              return `${RouteGenerator.#API_URL}/${RouteGenerator.#ACTIVITIES}/id/${
+                searchObj.activityId
+              }`;
+            case this.#criteria.all.byDesc():
+              return `${RouteGenerator.#API_URL}/${RouteGenerator.#ACTIVITIES}/description/${
+                searchObj.description
+              }`;
+            case this.#criteria.all.byType():
+              return `${RouteGenerator.#API_URL}/${RouteGenerator.#ACTIVITIES}/types/${
+                searchObj.type
+              }`;
+            case this.#criteria.all.byParticipants():
+              return `${RouteGenerator.#API_URL}/${RouteGenerator.#ACTIVITIES}/participants/${
+                searchObj.participants
+              }`;
           }
-          return "";
+          return null;
         }
       }
       const route = new RouteGenerator().generate();
       return new Promise((resolve, reject) => {
-        if (!route) {
+        if (null === route) {
           reject(new Error("Front-end API call not implemented yet"));
           return;
         }
