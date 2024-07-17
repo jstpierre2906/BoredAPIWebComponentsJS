@@ -7,7 +7,7 @@ import {
 import { htmlSelectOption } from "@components/boredapi-searchbox/templates/boredapi-searchbox-select-option.html.js";
 import { html } from "@components/boredapi-searchbox/templates/boredapi-searchbox.html.js";
 import { Component } from "@components/component.js";
-import { utils } from "../../utils/utils.js";
+import { utils } from "@utils/utils.js";
 
 export class BoredAPISearchBox extends Component {
   static #DEFAULT_SEARCH_DESCRIPTION = "Search Bored API";

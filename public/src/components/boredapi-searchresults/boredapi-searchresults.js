@@ -2,8 +2,7 @@ import { typesModel } from "@components/boredapi-searchbox/boredapi-searchbox.mo
 import { htmlResult } from "@components/boredapi-searchresults/templates/boredapi-searchresult.html.js";
 import { html } from "@components/boredapi-searchresults/templates/boredapi-searchresults.html.js";
 import { Component } from "@components/component.js";
-// TODO Add @utils
-import { utils } from "../../utils/utils.js";
+import { utils } from "@utils/utils.js";
 
 export class BoredAPISearchResults extends Component {
   static #EMPTY_RESULTSET = "Empty resultset";
