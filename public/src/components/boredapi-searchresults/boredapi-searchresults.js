@@ -45,7 +45,7 @@ export class BoredAPISearchResults extends Component {
         #criteria = {
           findOne: {
             // TODO Put as disabled other fields when activityId field is focused, same for description.
-            byId: () => searchObj.activityId && /^\d{7}$/.test(searchObj.activityId),
+            byId: () => searchObj.activityId && /^\d{1,7}$/.test(searchObj.activityId),
           },
           findAll: {
             all: () => undefined === Object.keys(searchObj).find((k) => k !== "maxResults"),
@@ -78,7 +78,6 @@ export class BoredAPISearchResults extends Component {
 
             // ACTIVITIES_ID
             case this.#criteria.findOne.byId():
-              // TODO Enforce 7 chars padding onKeyup event
               return `${RouteGenerator.#API_URL}/${RouteGenerator.#ACTIVITIES}/id/${
                 searchObj.activityId
               }`;
@@ -135,13 +134,13 @@ export class BoredAPISearchResults extends Component {
       const route = new RouteGenerator().generate();
       return new Promise((resolve, reject) => {
         if (null === route) {
-          reject(new Error("Front-end API call not implemented yet"));
+          reject(new Error("No search criteria matched"));
           return;
         }
         fetch(route, { method: "GET" })
           .then((response) => {
             if (response.status !== 200) {
-              reject(new Error(`Error: Response status ${response.status}`));
+              reject(new Error(`Response status ${response.status}`));
             }
             return response.json();
           })
