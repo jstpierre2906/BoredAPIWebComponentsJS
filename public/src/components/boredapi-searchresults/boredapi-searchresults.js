@@ -37,11 +37,9 @@ export class BoredAPISearchResults extends Component {
       class RouteGenerator {
         static #API_URL = "http://localhost:9000/api/v0.9.4";
         static #ACTIVITIES = "activities";
-        /** @type {
-         *  {"findOne" | "findAll": {
-         *    [key: string]: () => boolean
-         *  }}
-         * } */
+        static #BASE_URI = `${RouteGenerator.#API_URL}/${RouteGenerator.#ACTIVITIES}`;
+
+        #route = null;
         #criteria = {
           findOne: {
             // TODO Put as disabled other fields when activityId field is focused, same for description.
@@ -68,72 +66,58 @@ export class BoredAPISearchResults extends Component {
             },
           },
         };
-        /** @returns {string} */
+
+        /** @returns {RouteGenerator} */
         generate() {
           console.log(searchObj);
           switch (true) {
-            // ACTIVITIES
             case this.#criteria.findAll.all():
-              return `${RouteGenerator.#API_URL}/${RouteGenerator.#ACTIVITIES}`;
+              this.#route = RouteGenerator.#BASE_URI;
+              return this;
 
-            // ACTIVITIES_ID
             case this.#criteria.findOne.byId():
-              return `${RouteGenerator.#API_URL}/${RouteGenerator.#ACTIVITIES}/id/${
-                searchObj.activityId
-              }`;
+              this.#route = `${RouteGenerator.#BASE_URI}/id/${searchObj.activityId}`;
+              return this;
 
-            // ACTIVITIES_DESCRIPTION
             case this.#criteria.findAll.byDescription():
-              return `${RouteGenerator.#API_URL}/${RouteGenerator.#ACTIVITIES}/description/${
-                searchObj.description
-              }`;
+              this.#route = `${RouteGenerator.#BASE_URI}/description/${searchObj.description}`;
+              return this;
 
-            // ACTIVITIES_TYPES_PARTICIPANTS_DURATION
-            case this.#criteria.findAll.byType() &&
-              this.#criteria.findAll.byParticipants() &&
-              this.#criteria.findAll.byDuration():
-              return `${RouteGenerator.#API_URL}/${RouteGenerator.#ACTIVITIES}/types/${
-                searchObj.type
-              }/participants/${searchObj.participants}/duration/${searchObj.duration}`;
-
-            // ACTIVITIES_TYPES_PARTICIPANTS
-            case this.#criteria.findAll.byType() && this.#criteria.findAll.byParticipants():
-              return `${RouteGenerator.#API_URL}/${RouteGenerator.#ACTIVITIES}/types/${
-                searchObj.type
-              }/participants/${searchObj.participants}`;
-
-            // TODO Create TYPES_DURATION
-
-            // ACTIVITIES_TYPES
             case this.#criteria.findAll.byType():
-              return `${RouteGenerator.#API_URL}/${RouteGenerator.#ACTIVITIES}/types/${
-                searchObj.type
-              }`;
+              this.#route = `${RouteGenerator.#BASE_URI}/types/${searchObj.type}`;
+              if (this.#criteria.findAll.byParticipants()) {
+                // TODO Create TYPES_DURATION
+                this.#route += `/participants/${searchObj.participants}`;
+              }
+              if (this.#criteria.findAll.byDuration()) {
+                this.#route += `/duration/${searchObj.duration}`;
+              }
+              return this;
 
-            // ACTIVITIES_PARTICIPANTS_DURATION
-            case this.#criteria.findAll.byParticipants() && this.#criteria.findAll.byDuration():
-              return `${RouteGenerator.#API_URL}/${RouteGenerator.#ACTIVITIES}/participants/${
-                searchObj.participants
-              }/duration/${searchObj.duration}`;
-
-            // ACTIVITIES_PARTICIPANTS
             case this.#criteria.findAll.byParticipants():
-              return `${RouteGenerator.#API_URL}/${RouteGenerator.#ACTIVITIES}/participants/${
-                searchObj.participants
-              }`;
+              this.#route = `${RouteGenerator.#BASE_URI}/participants/${searchObj.participants}`;
+              if (this.#criteria.findAll.byDuration()) {
+                this.#route += `/duration/${searchObj.duration}`;
+              }
+              return this;
 
             // ACTIVITIES_DURATION
             case this.#criteria.findAll.byDuration():
-              return `${RouteGenerator.#API_URL}/${RouteGenerator.#ACTIVITIES}/duration/${
-                searchObj.duration
-              }`;
+              this.#route = `${RouteGenerator.#BASE_URI}/duration/${searchObj.duration}`;
           }
-          return null;
+          return this;
+        }
+
+        /** @returns {string} */
+        getRoute() {
+          return this.#route;
         }
       }
-      const route = new RouteGenerator().generate();
+      const routeGenerator = new RouteGenerator();
+      routeGenerator.generate();
       return new Promise((resolve, reject) => {
-        if (null === route) {
+        const route = routeGenerator.getRoute();
+        if (!route) {
           reject(new Error("No search criteria matched"));
           return;
         }
