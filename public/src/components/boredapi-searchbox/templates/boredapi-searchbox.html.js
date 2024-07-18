@@ -47,6 +47,7 @@ export const html = ({
     </div>
     <div>
       <input id="maxResults" type="hidden" value="${iMaxResults}" />
+      <!-- TODO Create logic to reset fields to blanks instead of default values -->
       <input id="resetBtn" type="reset" value="Reset" />
       <input id="searchBtn" type="button" value="Search" />
     </div>
