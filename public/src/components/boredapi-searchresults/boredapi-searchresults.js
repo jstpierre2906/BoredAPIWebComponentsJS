@@ -66,6 +66,13 @@ export class BoredAPISearchResults extends Component {
             },
           },
         };
+        #uriParts = {
+          id: `id/${searchObj.activityId}`,
+          description: `description/${searchObj.description}`,
+          types: `types/${searchObj.type}`,
+          participants: `participants/${searchObj.participants}`,
+          duration: `duration/${searchObj.duration}`,
+        };
 
         /** @returns {RouteGenerator} */
         generate() {
@@ -76,34 +83,33 @@ export class BoredAPISearchResults extends Component {
               return this;
 
             case this.#criteria.findOne.byId():
-              this.#route = `${RouteGenerator.#BASE_URI}/id/${searchObj.activityId}`;
+              this.#route = `${RouteGenerator.#BASE_URI}/${this.#uriParts.id}`;
               return this;
 
             case this.#criteria.findAll.byDescription():
-              this.#route = `${RouteGenerator.#BASE_URI}/description/${searchObj.description}`;
+              this.#route = `${RouteGenerator.#BASE_URI}/${this.#uriParts.description}`;
               return this;
 
             case this.#criteria.findAll.byType():
-              this.#route = `${RouteGenerator.#BASE_URI}/types/${searchObj.type}`;
+              this.#route = `${RouteGenerator.#BASE_URI}/${this.#uriParts.types}`;
               if (this.#criteria.findAll.byParticipants()) {
                 // TODO Create TYPES_DURATION
-                this.#route += `/participants/${searchObj.participants}`;
+                this.#route += `/${this.#uriParts.participants}`;
               }
               if (this.#criteria.findAll.byDuration()) {
-                this.#route += `/duration/${searchObj.duration}`;
+                this.#route += `/${this.#uriParts.duration}`;
               }
               return this;
 
             case this.#criteria.findAll.byParticipants():
-              this.#route = `${RouteGenerator.#BASE_URI}/participants/${searchObj.participants}`;
+              this.#route = `${RouteGenerator.#BASE_URI}/${this.#uriParts.participants}`;
               if (this.#criteria.findAll.byDuration()) {
-                this.#route += `/duration/${searchObj.duration}`;
+                this.#route += `/${this.#uriParts.duration}`;
               }
               return this;
 
-            // ACTIVITIES_DURATION
             case this.#criteria.findAll.byDuration():
-              this.#route = `${RouteGenerator.#BASE_URI}/duration/${searchObj.duration}`;
+              this.#route = `${RouteGenerator.#BASE_URI}/${this.#uriParts.duration}`;
           }
           return this;
         }
