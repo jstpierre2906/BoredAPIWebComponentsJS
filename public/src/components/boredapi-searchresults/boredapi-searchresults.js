@@ -39,7 +39,7 @@ export class BoredAPISearchResults extends Component {
         static #ACTIVITIES = "activities";
         static #BASE_URI = `${RouteGenerator.#API_URL}/${RouteGenerator.#ACTIVITIES}`;
 
-        #route = null;
+        #route = "";
         #criteria = {
           findOne: {
             // TODO Put as disabled other fields when activityId field is focused, same for description.
@@ -66,50 +66,61 @@ export class BoredAPISearchResults extends Component {
             },
           },
         };
-        #uriParts = {
-          id: `id/${searchObj.activityId}`,
-          description: `description/${searchObj.description}`,
-          types: `types/${searchObj.type}`,
-          participants: `participants/${searchObj.participants}`,
-          duration: `duration/${searchObj.duration}`,
-        };
+
+        /** @param {"base" | "id" | "description" | "types" | "participants" | "duration"} uriPart */
+        #buildRoute(uriPart) {
+          const uriParts = {
+            base: RouteGenerator.#BASE_URI,
+            id: `/id/${searchObj.activityId}`,
+            description: `/description/${searchObj.description}`,
+            types: `/types/${searchObj.type}`,
+            participants: `/participants/${searchObj.participants}`,
+            duration: `/duration/${searchObj.duration}`,
+          };
+          this.#route = this.#route.concat(uriParts[uriPart]);
+        }
 
         /** @returns {RouteGenerator} */
         generate() {
           console.log(searchObj);
           switch (true) {
             case this.#criteria.findAll.all():
-              this.#route = RouteGenerator.#BASE_URI;
+              this.#buildRoute("base");
               return this;
 
             case this.#criteria.findOne.byId():
-              this.#route = `${RouteGenerator.#BASE_URI}/${this.#uriParts.id}`;
+              this.#buildRoute("base");
+              this.#buildRoute("id");
               return this;
 
             case this.#criteria.findAll.byDescription():
-              this.#route = `${RouteGenerator.#BASE_URI}/${this.#uriParts.description}`;
+              this.#buildRoute("base");
+              this.#buildRoute("description");
               return this;
 
             case this.#criteria.findAll.byType():
-              this.#route = `${RouteGenerator.#BASE_URI}/${this.#uriParts.types}`;
+              this.#buildRoute("base");
+              this.#buildRoute("types");
               if (this.#criteria.findAll.byParticipants()) {
                 // TODO Create TYPES_DURATION
-                this.#route += `/${this.#uriParts.participants}`;
+                this.#buildRoute("participants");
               }
               if (this.#criteria.findAll.byDuration()) {
-                this.#route += `/${this.#uriParts.duration}`;
+                this.#buildRoute("duration");
               }
               return this;
 
             case this.#criteria.findAll.byParticipants():
-              this.#route = `${RouteGenerator.#BASE_URI}/${this.#uriParts.participants}`;
+              this.#buildRoute("base");
+              this.#buildRoute("participants");
               if (this.#criteria.findAll.byDuration()) {
-                this.#route += `/${this.#uriParts.duration}`;
+                this.#buildRoute("duration");
               }
               return this;
 
             case this.#criteria.findAll.byDuration():
-              this.#route = `${RouteGenerator.#BASE_URI}/${this.#uriParts.duration}`;
+              this.#buildRoute("base");
+              this.#buildRoute("duration");
           }
           return this;
         }
