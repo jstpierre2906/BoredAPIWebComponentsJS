@@ -84,6 +84,7 @@ export class BoredAPISearchBox extends Component {
 
   connectedCallback() {
     this.#setSearchButtonEventListener();
+    this.#setResetButtonEventListener();
     this.#setMaxResultsAttribute();
   }
 
@@ -107,8 +108,15 @@ export class BoredAPISearchBox extends Component {
   };
 
   #setSearchButtonEventListener() {
-    const searchButton = this.shadowRoot.querySelector("#searchBtn");
-    searchButton.addEventListener("click", (_event) => this.#searchQueryHandler());
+    this.shadowRoot
+      .querySelector("#searchBtn")
+      .addEventListener("click", () => this.#searchQueryHandler());
+  }
+
+  #setResetButtonEventListener() {
+    this.shadowRoot
+      .querySelector("#resetBtn")
+      .addEventListener("click", () => this.shadowRoot.host.removeAttribute("search-fields"));
   }
 
   #setMaxResultsAttribute() {
