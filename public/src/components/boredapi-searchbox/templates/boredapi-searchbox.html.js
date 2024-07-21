@@ -1,14 +1,6 @@
-/**
- * @param {{
- *  iSearchDescription: string;
- *  types: string[];
- *  participants: string[];
- *  durations: string[];
- *  orderbys: string[];
- *  iMaxResults: string | number;
- * }}
- * @returns {HTMLDivElement as string}
- */
+import "../typedefs.js";
+
+/** @type {HTMLFn} */
 export const html = ({
   iSearchDescription,
   types,

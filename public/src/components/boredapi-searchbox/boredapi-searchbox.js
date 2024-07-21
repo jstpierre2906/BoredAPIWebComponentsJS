@@ -1,3 +1,4 @@
+import "./typedefs.js";
 import {
   durationsModel,
   orderbyModel,
@@ -82,17 +83,8 @@ export class BoredAPISearchBox extends Component {
     );
   }
 
-  connectedCallback() {
-    this.#setSearchButtonEventListener();
-    this.#setResetButtonEventListener();
-    this.#setMaxResultsAttribute();
-  }
-
-  /**
-   * @param {string} searchFieldsAttribute
-   * @returns {Object | null}
-   */
-  #setSearchFields = (searchFieldsAttribute) => {
+  /** @type {SetSearchFieldsFn} */
+  #setSearchFields(searchFieldsAttribute) {
     try {
       if (!searchFieldsAttribute) {
         return null;
@@ -105,7 +97,91 @@ export class BoredAPISearchBox extends Component {
     } catch (_error) {
       return null;
     }
-  };
+  }
+
+  connectedCallback() {
+    this.#manageIdDescriptionFields();
+    this.#setSearchButtonEventListener();
+    this.#setResetButtonEventListener();
+    this.#setMaxResultsAttribute();
+  }
+
+  #manageIdDescriptionFields() {
+    // a) +onload set disabled
+    // b) on label click
+    //    i) +enable one ;
+    //   ii) +disable other(s)
+    // c) +interlude:
+    //    i) +cleanup
+    //   ii) +more cleanup
+    // d) on blur, if !value, disable
+
+    /** @type {FieldObj[]} */
+    const fieldObjects = [
+      {
+        name: "activityId",
+        label: "ID",
+        labelSearch: "Search by activity ID",
+        inputElement: null,
+        labelElement: null,
+      },
+      {
+        name: "description",
+        label: "Description",
+        labelSearch: "Search by description",
+        inputElement: null,
+        labelElement: null,
+      },
+    ];
+
+    /** @param {ElementLabelFieldObj} */
+    const enable = ({ element, label, fieldObj }) => {
+      element.removeAttribute("disabled");
+      element.style.display = "inline-block";
+      label.textContent = fieldObj.label;
+      label.style.cursor = "default";
+      label.style.textDecoration = "none";
+    };
+
+    /** @param {ElementLabelFieldObj} */
+    const disable = ({ element, label, fieldObj }) => {
+      element.setAttribute("disabled", "");
+      element.style.display = "none";
+      label.textContent = fieldObj.labelSearch;
+      label.style.cursor = "pointer";
+      label.style.textDecoration = "underline";
+    };
+
+    /** @type {QueryElementLabelFn} */
+    const queryElement = (fieldObjName) => this.shadowRoot.querySelector(`#${fieldObjName}`);
+
+    /** @type {QueryElementLabelFn} */
+    const queryLabel = (fieldObjName) =>
+      this.shadowRoot.querySelector(`label[for='${fieldObjName}']`);
+
+    /**  @type {FetchOtherElementPartsFn} */
+    const fetchOtherElementParts = (currentElementId) => {
+      const fieldObj = fieldObjects.find((f) => f.name !== currentElementId);
+      return { element: queryElement(fieldObj.name), label: queryLabel(fieldObj.name), fieldObj };
+    };
+
+    fieldObjects.forEach((fieldObj) => {
+      const currentElement = queryElement(fieldObj.name);
+      const currentLabel = queryLabel(fieldObj.name);
+      currentLabel.addEventListener("click", () => {
+        enable({ element: currentElement, label: currentLabel, fieldObj });
+      });
+      currentElement.addEventListener("keyup", () => {
+        if (currentElement.value) {
+          const { element, label, fieldObj } = fetchOtherElementParts(currentElement.id);
+          disable({ element, label, fieldObj });
+        }
+      });
+      if (currentElement.value === "") {
+        disable({ element: currentElement, label: currentLabel, fieldObj });
+      }
+    });
+  }
 
   #setSearchButtonEventListener() {
     this.shadowRoot
@@ -128,7 +204,7 @@ export class BoredAPISearchBox extends Component {
   #searchQueryHandler() {
     const searchObj = {};
     this.applyActions({
-      setData: () => {
+      setSearchObj: () => {
         const queryElements = [
           "select",
           "input[type='number']",
@@ -138,10 +214,8 @@ export class BoredAPISearchBox extends Component {
           .map((e) => `#search-form ${e}`)
           .join(", ");
         Array.from(this.shadowRoot.querySelectorAll(queryElements))
-          .filter((element) => element.value !== "")
+          .filter((element) => element.value !== "" && element.getAttribute("disabled") === null)
           .forEach((element) => (searchObj[element.id] = element.value));
-      },
-      dispatchEvent: () => {
         this.findComponent({ selector: "boredapi-searchresults" }).dispatchEvent(
           new CustomEvent("searchEvent", {
             bubbles: true,
@@ -153,11 +227,7 @@ export class BoredAPISearchBox extends Component {
     });
   }
 
-  /**
-   * @param {string} name
-   * @param {string} oldValue
-   * @param {string} newValue
-   */
+  /** @type {AttributeChangedCallbackFn} */
   attributeChangedCallback(name, oldValue, newValue) {
     switch (true) {
       case name === "max-results":
@@ -191,11 +261,7 @@ export class BoredAPISearchBox extends Component {
       participants: null,
       duration: null,
     };
-    /**
-     * @param {string[]} model
-     * @param {string} key
-     * @returns {boolean}
-     */
+    /** @type {ModelIncludesSearchValueFn} */
     const modelIncludesSearchValue = (model, key) => model.includes(`${this.#iSearchFields[key]}`);
     this.#iSearchFields &&
       Object.keys(this.#iSearchFields)
@@ -213,20 +279,14 @@ export class BoredAPISearchBox extends Component {
         })
         .forEach((key) => (newValues[key] = this.#iSearchFields[key]));
 
-    /**
-     * @param {HTMLOptionElement[]} options
-     * @param {string} key
-     */
+    /** @type {ManageSelectedAttributeFn} */
     const removeCurrentSelectedAttribute = (options, key) => {
       options
         .filter((option) => option.value !== newValues[key])
         .find((option) => option.hasAttribute("selected"))
         ?.removeAttribute("selected");
     };
-    /**
-     * @param {HTMLOptionElement[]} options
-     * @param {string} key
-     */
+    /** @type {ManageSelectedAttributeFn} */
     const addNewSelectedAttribute = (options, key) => {
       options
         .find((option) => option.value === `${newValues[key]}`)

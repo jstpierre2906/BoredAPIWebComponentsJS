@@ -1,7 +1,6 @@
-/**
- * @param {{value: string | number; selected: boolean; textContent: string; }}
- * @returns {HTMLOptionElement as string}
- */
+import "../typedefs.js";
+
+/** @type {HTMLSelectOptionFn} */
 export const htmlSelectOption = ({ value, selected, textContent }) => {
   const selectedAttr = selected ? " selected" : "";
   const valueAttr = value ?? "";
