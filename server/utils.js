@@ -1,13 +1,9 @@
+import "./typedefs.js"
+
 const utils = {
-  /**
-   * @param {{
-   *  shouldLogJSFile: boolean;
-   *  request: Request
-   * }}
-   * @returns { boolean }
-   */
+  /** @type {FileShouldBeLoggedFn} */
   fileShouldBeLogged: ({ shouldLogJSFile, request }) => {
-    /** @returns { "IS_ROOT" | "IS_HTML_FILE" | "IS_JS_FILE_AND_SHOULD_BE_LOGGED" | "DO_NOT_LOG" } */
+    /** @type {EvaluateFileFn} */
     const evaluateFile = () => {
       if (request.url === "/") {
         return "IS_ROOT";
@@ -34,13 +30,8 @@ const utils = {
         return false;
     }
   },
-  /**
-   * @param {{
-   *  str: string;
-   *  request: Request;
-   * }}
-   * @returns { string }
-   */
+
+  /** @type {SetFileLogFn} */
   setFileLog: ({ str, request }) => {
     return str
       .replace("{date}", new Date().toISOString())
@@ -48,14 +39,8 @@ const utils = {
       .replace("{url}", request.url)
       .replace("{sec-ch-ua}", request.headers["sec-ch-ua"] ?? "");
   },
-  /**
-   * @param {{
-   *  str: string;
-   *  host: string;
-   *  port: number;
-   * }}
-   * @returns { string }
-   */
+
+  /** @type {SetServerStartLog} */
   setServerStartLog: ({ str, host, port }) => {
     return str
       .replace("{host}", host)

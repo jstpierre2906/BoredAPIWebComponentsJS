@@ -1,4 +1,5 @@
 import "./typedefs.js";
+import "../typedefs.js";
 import {
   durationsModel,
   orderbyModel,
@@ -202,6 +203,7 @@ export class BoredAPISearchBox extends Component {
   }
 
   #searchQueryHandler() {
+    /** @type {SearchObj} */
     const searchObj = {};
     this.applyActions({
       setSearchObj: () => {

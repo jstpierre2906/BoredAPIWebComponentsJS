@@ -18,7 +18,7 @@
 
 /** @typedef {function(string): HTMLInputElement | HTMLLabelElement} QueryElementLabelFn */
 
-/**@typedef {function(string): ElementLabelFieldObj} FetchOtherElementPartsFn */
+/** @typedef {function(string): ElementLabelFieldObj} FetchOtherElementPartsFn */
 
 /** @typedef {function(string): Object | null} SetSearchFieldsFn */
 

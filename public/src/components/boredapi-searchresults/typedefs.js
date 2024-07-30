@@ -44,15 +44,6 @@
 * }} OrderbyModel
 */
 
-/**
- * @typedef {{
- *  type?: TypesModel,
- *  participants?: ParticipantsModel,
- *  duration?: DurationModel,
- *  maxResults: string
- * }} SearchObj
- */
-
 /** @typedef {{byId: function(): boolean}} RouteGeneratorCriteriaOne */
 
 /**
@@ -67,3 +58,20 @@
  */
 
 /** @typedef {{ findOne: RouteGeneratorCriteriaOne; findAll: RouteGeneratorCriteriaAll; }} RouteGeneratorCriteria */
+
+/** @typedef {function({link: string}): string} HTMLLinkFn */
+
+/**
+ * @typedef {function({
+ *      activity: string,
+ *      key: string,
+ *      type: string,
+ *      typeRaw: string,
+ *      participants: string,
+ *      duration: string,
+ *      durationRaw: string,
+ *      link: string
+ *  }): string} HTMLResultFn
+ */
+
+/** @typedef {function({results: string, emptyResultset: string }): string} HTMLFn */

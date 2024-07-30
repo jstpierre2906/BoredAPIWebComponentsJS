@@ -1,4 +1,5 @@
 import "./typedefs.js";
+import "../typedefs.js";
 import { typesModel } from "@components/boredapi-searchbox/boredapi-searchbox.model.js";
 import { htmlResult } from "@components/boredapi-searchresults/templates/boredapi-searchresult.html.js";
 import { html } from "@components/boredapi-searchresults/templates/boredapi-searchresults.html.js";

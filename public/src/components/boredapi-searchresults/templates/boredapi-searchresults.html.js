@@ -1,10 +1,4 @@
-/**
- * @param {{
- *  results: (HTMLDivElement as string)[]
- *  emptyResultset:string;
- * }}
- * @returns {HTMLDivElement as string}
- */
+/** @type {HTMLFn} */
 export const html = ({ results, emptyResultset }) => /*html*/ `
 <link rel="stylesheet" href="/src/components/boredapi-searchresults/styles/boredapi-searchresults.css" />
 <div>
