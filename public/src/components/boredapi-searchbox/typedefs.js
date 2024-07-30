@@ -44,27 +44,3 @@
  *  selected: boolean,
  *  textContent: string): string} HTMLSelectOptionFn
  */
-
-/**
- * @typedef {(
- *  | "busywork"
- *  | "charity"
- *  | "cooking"
- *  | "diy"
- *  | "education"
- *  | "music"
- *  | "social"
- *  | "recreational"
- *  | "relaxation")[]} TypesModel
- */
-
-/** @typedef {("1" | "2" | "3" | "4" | "5" | "8" | "2+" | "3+" | "4+")[]} ParticipantsModel */
-
-/** @typedef {("minutes" | "hours" | "days" | "weeks")[]} DurationModel */
-
-/**
- * @typedef {{
- *  fields: ("type" | "description" | "duration")[],
- *  values: ("asc" | "desc")[]
- * }} OrderbyModel
- */

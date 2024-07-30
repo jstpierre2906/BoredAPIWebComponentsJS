@@ -1,3 +1,4 @@
+import "./typedefs.js";
 import { typesModel } from "@components/boredapi-searchbox/boredapi-searchbox.model.js";
 import { htmlResult } from "@components/boredapi-searchresults/templates/boredapi-searchresult.html.js";
 import { html } from "@components/boredapi-searchresults/templates/boredapi-searchresults.html.js";
@@ -30,9 +31,9 @@ export class BoredAPISearchResults extends Component {
     this.addEventListener("searchEvent", (event) => this.#searchHandler(event.detail));
   }
 
-  /** @param {{ searchObj: Object }} */
+  /** @param {{ searchObj: SearchObj }} */
   #searchHandler({ searchObj }) {
-    /** @returns {Promise<Object | Object[]>} */
+    /** @returns {Promise<Resultset | Resultset[]>} */
     (() => {
       class RouteGenerator {
         static #API_URL = "http://localhost:9000/api/v0.9.4";
@@ -40,9 +41,9 @@ export class BoredAPISearchResults extends Component {
         static #BASE_URI = `${RouteGenerator.#API_URL}/${RouteGenerator.#ACTIVITIES}`;
 
         #route = "";
+        /** @type {RouteGeneratorCriteria} */
         #criteria = {
           findOne: {
-            // TODO Put as disabled other fields when activityId field is focused, same for description.
             byId: () => searchObj.activityId && /^\d{1,7}$/.test(searchObj.activityId),
           },
           findAll: {
@@ -67,7 +68,7 @@ export class BoredAPISearchResults extends Component {
           },
         };
 
-        /** @param {"base" | "id" | "description" | "types" | "participants" | "duration"} uriPart */
+        /** @param {URIPart} uriPart */
         #buildRoute(uriPart) {
           const uriParts = {
             base: RouteGenerator.#BASE_URI,
@@ -161,7 +162,7 @@ export class BoredAPISearchResults extends Component {
     this.#emptyResultset.textContent = BoredAPISearchResults.#EMPTY_RESULTSET;
   }
 
-  /** @param {Object | Object[]} resultset */
+  /** @param {Resultset | Resultset[]} resultset */
   #setResults(resultset) {
     if (resultset.length === 0) {
       this.#unsetResults();
@@ -169,6 +170,7 @@ export class BoredAPISearchResults extends Component {
     }
     this.#emptyResultset.textContent = null;
     (() => {
+      /** @param {Resultset} */
       const setValues = (resultsetObj) => ({
         activity: resultsetObj.activity,
         key: resultsetObj.key,
@@ -192,7 +194,7 @@ export class BoredAPISearchResults extends Component {
     const maxResults = searchBox.getAttribute("max-results");
     const spanLinks = this.shadowRoot.querySelectorAll("div.result > ul > li > span.link");
     Array.from(spanLinks).forEach((link) => {
-      /** @returns {Single-key JSON as string} */
+      /** @type {SearchBoxSearchFieldAttributeFn} */
       const searchBoxSearchFieldAttribute = () => {
         return Object.keys(link.dataset)
           .map((key) => `{'${key}': '${link.dataset[key]}'}`)
