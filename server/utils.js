@@ -1,4 +1,4 @@
-import "./typedefs.js"
+require("./typedefs.js");
 
 const utils = {
   /** @type {FileShouldBeLoggedFn} */
