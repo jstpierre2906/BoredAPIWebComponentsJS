@@ -117,8 +117,8 @@ export class BoredAPISearchBox extends Component {
     //   ii) +more cleanup
     // d) on blur, if !value, disable
 
-    /** @type {FieldObj[]} */
-    const fieldObjects = [
+    /** @type {FieldData[]} */
+    const fieldsData = [
       {
         name: "activityId",
         label: "ID",
@@ -135,8 +135,8 @@ export class BoredAPISearchBox extends Component {
       },
     ];
 
-    /** @param {ElementLabelFieldObj} */
-    const enable = ({ element, label, fieldObj }) => {
+    /** @param {ElementLabelFieldData} */
+    const enableField = ({ element, label, fieldObj }) => {
       element.removeAttribute("disabled");
       element.style.display = "inline-block";
       label.textContent = fieldObj.label;
@@ -144,8 +144,8 @@ export class BoredAPISearchBox extends Component {
       label.style.textDecoration = "none";
     };
 
-    /** @param {ElementLabelFieldObj} */
-    const disable = ({ element, label, fieldObj }) => {
+    /** @param {ElementLabelFieldData} */
+    const disableField = ({ element, label, fieldObj }) => {
       element.setAttribute("disabled", "");
       element.style.display = "none";
       label.textContent = fieldObj.labelSearch;
@@ -153,34 +153,46 @@ export class BoredAPISearchBox extends Component {
       label.style.textDecoration = "underline";
     };
 
-    /** @type {QueryElementLabelFn} */
-    const queryElement = (fieldObjName) => this.shadowRoot.querySelector(`#${fieldObjName}`);
+    /** @param {number} currentElementId */
+    const disableOtherField = (currentElementId) => {
+      const { element, label, fieldObj } = fetchOtherField(currentElementId);
+      disableField({ element, label, fieldObj });
+  };
 
     /** @type {QueryElementLabelFn} */
-    const queryLabel = (fieldObjName) =>
-      this.shadowRoot.querySelector(`label[for='${fieldObjName}']`);
+    const queryFieldElement = (fieldDataName) => this.shadowRoot.querySelector(`#${fieldDataName}`);
 
-    /**  @type {FetchOtherElementPartsFn} */
-    const fetchOtherElementParts = (currentElementId) => {
-      const fieldObj = fieldObjects.find((f) => f.name !== currentElementId);
-      return { element: queryElement(fieldObj.name), label: queryLabel(fieldObj.name), fieldObj };
+    /** @type {QueryElementLabelFn} */
+    const queryFieldLabel = (fieldDataName) =>
+      this.shadowRoot.querySelector(`label[for='${fieldDataName}']`);
+
+    /**  @type {FetchOtherFieldDataFn} */
+    const fetchOtherField = (currentElementId) => {
+      const fieldObj = fieldsData.find((f) => f.name !== currentElementId);
+      return {
+        element: queryFieldElement(fieldObj.name),
+        label: queryFieldLabel(fieldObj.name),
+        fieldObj,
+      };
     };
 
-    fieldObjects.forEach((fieldObj) => {
-      const currentElement = queryElement(fieldObj.name);
-      const currentLabel = queryLabel(fieldObj.name);
+    fieldsData.forEach((fieldData) => {
+      const currentElement = queryFieldElement(fieldData.name);
+      const currentLabel = queryFieldLabel(fieldData.name);
+      if (currentElement.value === "") {
+        disableField({ element: currentElement, label: currentLabel, fieldObj: fieldData });
+      }
       currentLabel.addEventListener("click", () => {
-        enable({ element: currentElement, label: currentLabel, fieldObj });
+        enableField({ element: currentElement, label: currentLabel, fieldObj: fieldData });
+        disableOtherField(currentElement.id);
       });
-      currentElement.addEventListener("keyup", () => {
-        if (currentElement.value) {
-          const { element, label, fieldObj } = fetchOtherElementParts(currentElement.id);
-          disable({ element, label, fieldObj });
+      currentElement.addEventListener("blur", () => {
+        if (currentElement.value === "") {
+          disableField({ element: currentElement, label: currentLabel, fieldObj: fieldData });
+        } else {
+          disableOtherField(currentElement.id);
         }
       });
-      if (currentElement.value === "") {
-        disable({ element: currentElement, label: currentLabel, fieldObj });
-      }
     });
   }
 

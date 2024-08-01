@@ -5,20 +5,20 @@
  *  labelSearch: string;
  *  inputElement: HTMLInputElement;
  *  labelElement: HTMLLabelElement
- * }} FieldObj
+ * }} FieldData
  */
 
 /**
  * @typedef {{
  *  element: HTMLInputElement;
  *  label: HTMLLabelElement;
- *  fieldObj: FieldObj
- * }} ElementLabelFieldObj
+ *  fieldObj: FieldData
+ * }} ElementLabelFieldData
  */
 
 /** @typedef {function(string): HTMLInputElement | HTMLLabelElement} QueryElementLabelFn */
 
-/** @typedef {function(string): ElementLabelFieldObj} FetchOtherElementPartsFn */
+/** @typedef {function(string): ElementLabelFieldData} FetchOtherFieldDataFn */
 
 /** @typedef {function(string): Object | null} SetSearchFieldsFn */
 
