@@ -112,10 +112,8 @@ export class BoredAPISearchBox extends Component {
     // b) on label click
     //    i) +enable one ;
     //   ii) +disable other(s)
-    // c) +interlude:
-    //    i) +cleanup
-    //   ii) +more cleanup
-    // d) on blur, if !value, disable
+    //       including type, participants and duration (treat as a whole)
+    //  iii) create css class
 
     /** @type {FieldData[]} */
     const fieldsData = [
@@ -137,6 +135,8 @@ export class BoredAPISearchBox extends Component {
 
     /** @param {ElementLabelFieldData} */
     const enableField = ({ element, label, fieldObj }) => {
+      console.log(element.classList);
+      console.log(label.classList);
       element.removeAttribute("disabled");
       element.style.display = "inline-block";
       label.textContent = fieldObj.label;
@@ -185,13 +185,6 @@ export class BoredAPISearchBox extends Component {
       currentLabel.addEventListener("click", () => {
         enableField({ element: currentElement, label: currentLabel, fieldObj: fieldData });
         disableOtherField(currentElement.id);
-      });
-      currentElement.addEventListener("blur", () => {
-        if (currentElement.value === "") {
-          disableField({ element: currentElement, label: currentLabel, fieldObj: fieldData });
-        } else {
-          disableOtherField(currentElement.id);
-        }
       });
     });
   }
