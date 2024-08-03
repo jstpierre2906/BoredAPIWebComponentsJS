@@ -7,6 +7,6 @@ export const utils = {
     types: (type) => (type === "diy" ? type.toUpperCase() : utils.toSentenceCase(type)),
     participants: (qty) => qty.replace("+", " or more"),
     durations: (duration) => utils.toSentenceCase(duration),
-    orderbys: (field, value) => `${utils.toSentenceCase(field)} - ${value.toUpperCase()}`,
+    sortOrders: (field, value) => `${utils.toSentenceCase(field)} - ${value.toUpperCase()}`,
   },
 };

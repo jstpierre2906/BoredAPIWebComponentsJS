@@ -127,13 +127,19 @@ export class BoredAPISearchResults extends Component {
           return this;
         }
 
+        addQueryString() {
+          if (searchObj.sortOrder) {
+            this.#route = this.#route.concat(`?sort-order=${searchObj.sortOrder}`);
+          }
+        }
+
         /** @returns {string} */
         getRoute() {
           return this.#route;
         }
       }
       const routeGenerator = new RouteGenerator();
-      routeGenerator.generate();
+      routeGenerator.generate().addQueryString();
       return new Promise((resolve, reject) => {
         const route = routeGenerator.getRoute();
         if (!route) {

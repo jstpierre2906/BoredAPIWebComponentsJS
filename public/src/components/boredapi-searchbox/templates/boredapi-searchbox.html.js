@@ -6,7 +6,7 @@ export const html = ({
   types,
   participants,
   durations,
-  orderbys,
+  sortOrders,
   iMaxResults,
 }) => /*html*/ `
 <link rel="stylesheet" href="/src/components/boredapi-searchbox/styles/boredapi-searchbox.css" />
@@ -34,8 +34,8 @@ export const html = ({
       <select id="duration">${durations.join("")}</select>
     </div>
     <div>
-      <label for="orderby">Order by</label>
-      <select id="orderby">${orderbys.join("")}</select>
+      <label for="sortOrder">Sort order</label>
+      <select id="sortOrder">${sortOrders.join("")}</select>
     </div>
     <div>
       <input id="maxResults" type="hidden" value="${iMaxResults}" />

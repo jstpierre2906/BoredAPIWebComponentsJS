@@ -22,7 +22,7 @@
  *  types: string[],
  *  participants: string[],
  *  durations: string[],
- *  orderbys: string[],
+ *  sortOrders: string[],
  *  iMaxResults: string | number }): string} HTMLFn
  */
 

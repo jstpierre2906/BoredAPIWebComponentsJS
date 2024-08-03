@@ -1,7 +1,7 @@
 import {
   durationsModel,
-  orderbyModel,
   participantsModel,
+  sortOrderModel,
   typesModel,
 } from "@components/boredapi-searchbox/boredapi-searchbox.model.js";
 import { htmlSelectOption } from "@components/boredapi-searchbox/templates/boredapi-searchbox-select-option.html.js";
@@ -58,25 +58,25 @@ export class BoredAPISearchBox extends Component {
         );
         durations.unshift(htmlSelectOption({ textContent: "Choose duration" }));
 
-        const orderbys = [];
-        orderbyModel.fields.forEach((field) =>
-          orderbyModel.values.forEach((value) => {
+        const sortOrders = [];
+        sortOrderModel.fields.forEach((field) =>
+          sortOrderModel.values.forEach((value) => {
             const option = htmlSelectOption({
               value: `${field}-${value}`,
-              textContent: utils.setDisplay.orderbys(field, value),
+              textContent: utils.setDisplay.sortOrders(field, value),
             });
-            orderbys.push(option);
+            sortOrders.push(option);
           })
         );
-        orderbys.unshift(htmlSelectOption({ textContent: "Choose sort order" }));
+        sortOrders.unshift(htmlSelectOption({ textContent: "Choose sort order" }));
 
         const template = document.createElement("template");
         template.innerHTML = html({
           iSearchDescription: this.#iSearchDescription,
-          types: types,
-          participants: participants,
-          durations: durations,
-          orderbys: orderbys,
+          types,
+          participants,
+          durations,
+          sortOrders,
           iMaxResults: this.#iMaxResults,
         });
         return template.content.cloneNode(true);

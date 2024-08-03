@@ -6,7 +6,7 @@
  *          | "types"
  *          | "participants"
  *          | "durations"
- *          | "orderbys"]: function(string, string | null): string
+ *          | "sortOrders"]: function(string, string | null): string
  *  },
  * }} UtilsObj
  */

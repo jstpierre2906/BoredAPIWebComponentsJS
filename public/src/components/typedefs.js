@@ -9,6 +9,7 @@
  *  type?: TypesModel,
  *  participants?: ParticipantsModel,
  *  duration?: DurationModel,
+ *  sortOrder? : string,
  *  maxResults: string
  * }} SearchObj
  */
