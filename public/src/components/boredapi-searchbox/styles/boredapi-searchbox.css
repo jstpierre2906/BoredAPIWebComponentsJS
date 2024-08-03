@@ -27,7 +27,7 @@
 
 :host > div > form > div > label {
   color: var(--color__green);
-  display: block;
+  display: inline-block;
 }
 
 :host > div > form > div > input,
@@ -42,6 +42,17 @@
 :host > div > form > div > input[type="text"],
 :host > div > form > div > input[type="number"] {
   width: 95%;
+}
+
+:host > div > form > div > input[type="text"]:disabled,
+:host > div > form > div > input[type="number"]:disabled {
+  display: none;
+}
+
+:host > div > form > div > label:has(+ input[type="text"]:disabled),
+:host > div > form > div > label:has(+ input[type="number"]:disabled) {
+  cursor: pointer;
+  text-decoration: underline;
 }
 
 :host > div > form > div > input[type="reset"],

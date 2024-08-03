@@ -1,5 +1,3 @@
-import "./typedefs.js";
-import "../typedefs.js";
 import {
   durationsModel,
   orderbyModel,
@@ -10,6 +8,8 @@ import { htmlSelectOption } from "@components/boredapi-searchbox/templates/bored
 import { html } from "@components/boredapi-searchbox/templates/boredapi-searchbox.html.js";
 import { Component } from "@components/component.js";
 import { utils } from "@utils/utils.js";
+import "../typedefs.js";
+import "./typedefs.js";
 
 export class BoredAPISearchBox extends Component {
   static #DEFAULT_SEARCH_DESCRIPTION = "Search Bored API";
@@ -108,12 +108,7 @@ export class BoredAPISearchBox extends Component {
   }
 
   #manageIdDescriptionFields() {
-    // a) +onload set disabled
-    // b) on label click
-    //    i) +enable one ;
-    //   ii) +disable other(s)
-    //       including type, participants and duration (treat as a whole)
-    //  iii) create css class
+    // a) create class
 
     /** @type {FieldData[]} */
     const fieldsData = [
@@ -135,29 +130,30 @@ export class BoredAPISearchBox extends Component {
 
     /** @param {ElementLabelFieldData} */
     const enableField = ({ element, label, fieldObj }) => {
-      console.log(element.classList);
-      console.log(label.classList);
       element.removeAttribute("disabled");
-      element.style.display = "inline-block";
       label.textContent = fieldObj.label;
-      label.style.cursor = "default";
-      label.style.textDecoration = "none";
     };
 
     /** @param {ElementLabelFieldData} */
     const disableField = ({ element, label, fieldObj }) => {
       element.setAttribute("disabled", "");
-      element.style.display = "none";
       label.textContent = fieldObj.labelSearch;
-      label.style.cursor = "pointer";
-      label.style.textDecoration = "underline";
     };
 
     /** @param {number} currentElementId */
     const disableOtherField = (currentElementId) => {
+      /**  @type {FetchOtherFieldDataFn} */
+      const fetchOtherField = (currentElementId) => {
+        const fieldObj = fieldsData.find((f) => f.name !== currentElementId);
+        return {
+          element: queryFieldElement(fieldObj.name),
+          label: queryFieldLabel(fieldObj.name),
+          fieldObj,
+        };
+      };
       const { element, label, fieldObj } = fetchOtherField(currentElementId);
       disableField({ element, label, fieldObj });
-  };
+    };
 
     /** @type {QueryElementLabelFn} */
     const queryFieldElement = (fieldDataName) => this.shadowRoot.querySelector(`#${fieldDataName}`);
@@ -165,16 +161,6 @@ export class BoredAPISearchBox extends Component {
     /** @type {QueryElementLabelFn} */
     const queryFieldLabel = (fieldDataName) =>
       this.shadowRoot.querySelector(`label[for='${fieldDataName}']`);
-
-    /**  @type {FetchOtherFieldDataFn} */
-    const fetchOtherField = (currentElementId) => {
-      const fieldObj = fieldsData.find((f) => f.name !== currentElementId);
-      return {
-        element: queryFieldElement(fieldObj.name),
-        label: queryFieldLabel(fieldObj.name),
-        fieldObj,
-      };
-    };
 
     fieldsData.forEach((fieldData) => {
       const currentElement = queryFieldElement(fieldData.name);
