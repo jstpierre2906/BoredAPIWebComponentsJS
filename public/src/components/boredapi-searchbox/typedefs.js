@@ -8,18 +8,6 @@
  * }} FieldData
  */
 
-/**
- * @typedef {{
- *  element: HTMLInputElement;
- *  label: HTMLLabelElement;
- *  fieldObj: FieldData
- * }} ElementLabelFieldData
- */
-
-/** @typedef {function(string): HTMLInputElement | HTMLLabelElement} QueryElementLabelFn */
-
-/** @typedef {function(string): ElementLabelFieldData} FetchOtherFieldDataFn */
-
 /** @typedef {function(string): Object | null} SetSearchFieldsFn */
 
 /** @typedef {function(string, string, string): void} AttributeChangedCallbackFn */

@@ -101,78 +101,76 @@ export class BoredAPISearchBox extends Component {
   }
 
   connectedCallback() {
-    this.#manageIdDescriptionFields();
+    this.#toggleFieldsDisplay();
     this.#setSearchButtonEventListener();
     this.#setResetButtonEventListener();
     this.#setMaxResultsAttribute();
   }
 
-  #manageIdDescriptionFields() {
-    // a) create class
+  #toggleFieldsDisplay() {
+    class FieldsDisplayToggleManager {
+      /** @type {FieldData[]} */
+      #fieldsData = [
+        {
+          name: "activityId",
+          label: "ID",
+          labelSearch: "Search by activity ID",
+          inputElement: null,
+          labelElement: null,
+        },
+        {
+          name: "description",
+          label: "Description",
+          labelSearch: "Search by description",
+          inputElement: null,
+          labelElement: null,
+        },
+      ];
+      #shadowRoot;
 
-    /** @type {FieldData[]} */
-    const fieldsData = [
-      {
-        name: "activityId",
-        label: "ID",
-        labelSearch: "Search by activity ID",
-        inputElement: null,
-        labelElement: null,
-      },
-      {
-        name: "description",
-        label: "Description",
-        labelSearch: "Search by description",
-        inputElement: null,
-        labelElement: null,
-      },
-    ];
-
-    /** @param {ElementLabelFieldData} */
-    const enableField = ({ element, label, fieldObj }) => {
-      element.removeAttribute("disabled");
-      label.textContent = fieldObj.label;
-    };
-
-    /** @param {ElementLabelFieldData} */
-    const disableField = ({ element, label, fieldObj }) => {
-      element.setAttribute("disabled", "");
-      label.textContent = fieldObj.labelSearch;
-    };
-
-    /** @param {number} currentElementId */
-    const disableOtherField = (currentElementId) => {
-      /**  @type {FetchOtherFieldDataFn} */
-      const fetchOtherField = (currentElementId) => {
-        const fieldObj = fieldsData.find((f) => f.name !== currentElementId);
-        return {
-          element: queryFieldElement(fieldObj.name),
-          label: queryFieldLabel(fieldObj.name),
-          fieldObj,
-        };
-      };
-      const { element, label, fieldObj } = fetchOtherField(currentElementId);
-      disableField({ element, label, fieldObj });
-    };
-
-    /** @type {QueryElementLabelFn} */
-    const queryFieldElement = (fieldDataName) => this.shadowRoot.querySelector(`#${fieldDataName}`);
-
-    /** @type {QueryElementLabelFn} */
-    const queryFieldLabel = (fieldDataName) =>
-      this.shadowRoot.querySelector(`label[for='${fieldDataName}']`);
-
-    fieldsData.forEach((fieldData) => {
-      const currentElement = queryFieldElement(fieldData.name);
-      const currentLabel = queryFieldLabel(fieldData.name);
-      if (currentElement.value === "") {
-        disableField({ element: currentElement, label: currentLabel, fieldObj: fieldData });
+      /** @param {ShadowRoot} shadowRoot */
+      constructor(shadowRoot) {
+        this.#shadowRoot = shadowRoot;
       }
-      currentLabel.addEventListener("click", () => {
-        enableField({ element: currentElement, label: currentLabel, fieldObj: fieldData });
-        disableOtherField(currentElement.id);
-      });
-    });
+
+      init() {
+        this.#fieldsData.forEach((fieldData) => {
+          fieldData.inputElement = this.#shadowRoot.querySelector(`#${fieldData.name}`);
+          fieldData.labelElement = this.#shadowRoot.querySelector(`label[for='${fieldData.name}']`);
+          if (fieldData.inputElement.value === "") {
+            this.#disableField(fieldData);
+          }
+          fieldData.labelElement.addEventListener("click", () => {
+            this.#enableField(fieldData);
+            this.#disableOtherField(fieldData);
+          });
+        });
+      }
+
+      /** @param {FieldData} fieldData */
+      #enableField = (fieldData) => {
+        fieldData.inputElement.removeAttribute("disabled");
+        fieldData.labelElement.textContent = fieldData.label;
+      };
+
+      /** @param {FieldData} fieldData */
+      #disableField = (fieldData) => {
+        fieldData.inputElement.setAttribute("disabled", "");
+        fieldData.labelElement.textContent = fieldData.labelSearch;
+      };
+
+      /** @param {FieldData} currentFieldData */
+      #disableOtherField = (currentFieldData) => {
+        let fieldData;
+        if (
+          undefined !==
+          (fieldData = this.#fieldsData.find((f) => f.name !== currentFieldData.inputElement.id))
+        ) {
+          this.#disableField(fieldData);
+        }
+      };
+    }
+    new FieldsDisplayToggleManager(this.shadowRoot).init();
   }
 
   #setSearchButtonEventListener() {
