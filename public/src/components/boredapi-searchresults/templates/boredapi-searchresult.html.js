@@ -1,4 +1,4 @@
-import "../typedefs.js";
+import "../boredapi-searchresults.typedefs.js";
 
 /** @type {HTMLLinkFn} */
 const htmlLink = ({ link }) => /*html*/ `

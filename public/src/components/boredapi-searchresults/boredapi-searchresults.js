@@ -3,8 +3,8 @@ import { htmlResult } from "@components/boredapi-searchresults/templates/boredap
 import { html } from "@components/boredapi-searchresults/templates/boredapi-searchresults.html.js";
 import { Component } from "@components/component.js";
 import { utils } from "@utils/utils.js";
-import "../typedefs.js";
-import "./typedefs.js";
+import "../common.typedefs.js";
+import "./boredapi-searchresults.typedefs.js";
 
 export class BoredAPISearchResults extends Component {
   static #EMPTY_RESULTSET = "Empty resultset";

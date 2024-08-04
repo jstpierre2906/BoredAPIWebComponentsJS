@@ -1,6 +1,6 @@
-import "../typedefs.js";
+import "../boredapi-searchbox.typedefs.js";
 
-/** @type {HTMLFn} */
+/** @type {SearchboxHTMLFn} */
 export const html = ({
   iSearchDescription,
   types,

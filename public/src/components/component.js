@@ -1,4 +1,4 @@
-import "./typedefs.js";
+import "./component.typedefs.js";
 
 export class Component extends HTMLElement {
   shadowRoot = this.attachShadow({ mode: "closed" });

@@ -1,4 +1,4 @@
-import "../typedefs.js";
+import "../boredapi-searchbox.typedefs.js";
 
 /** @type {HTMLSelectOptionFn} */
 export const htmlSelectOption = ({ value, selected, textContent }) => {

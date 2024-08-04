@@ -23,7 +23,7 @@
  *  participants: string[],
  *  durations: string[],
  *  sortOrders: string[],
- *  iMaxResults: string | number }): string} HTMLFn
+ *  iMaxResults: string | number }): string} SearchboxHTMLFn
  */
 
 /**
